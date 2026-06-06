@@ -1,686 +1,782 @@
+```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-slate-950 text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-300">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ميدان مراجعة علوم البلاغة | Balaghah Core Suite</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>مَعْهَدُ زَكَرِيَّا | عِلْمُ الْبَلَاغَةِ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        arabic: ['Traditional Arabic', 'Amiri', 'Sakkal Majalla', 'serif']
+                    },
+                    colors: {
+                        slate: { 950: '#070a12', 900: '#0f1421', 800: '#1e2638' },
+                        emerald: { 400: '#34d399', 500: '#10b981', 600: '#059669', 950: '#022c22' }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #060a12;
-        }
-        .arabic-font {
-            font-family: 'Amiri', serif;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0b1329;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f1421; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e2638; border-radius: 999px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #34d399; }
     </style>
 </head>
-<body class="text-slate-200 min-h-screen flex flex-col antialiased selection:bg-teal-500 selection:text-slate-950">
+<body class="h-full flex flex-col font-sans antialiased overflow-hidden">
 
-    <header class="border-b border-slate-800/80 bg-slate-900/40 backdrop-blur-xl sticky top-0 z-40 px-4 py-3 sm:px-8 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-teal-500/10">
-                ب
+    <header class="h-16 border-b border-slate-800/60 bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-6 z-30">
+        <div class="flex items-center space-x-3">
+            <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/50 flex items-center justify-center border border-emerald-500/30">
+                <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i>
             </div>
-            <div class="text-left">
-                <h1 class="text-sm font-bold tracking-tight text-white uppercase">مِيدَانُ البَلَاغَةِ</h1>
-                <p class="text-[11px] text-slate-400 font-medium">Advanced Rhetoric Review Arena</p>
+            <div>
+                <span class="text-xs tracking-widest text-emerald-400 font-mono uppercase block">Level 3 Architecture</span>
+                <span class="text-sm font-bold text-slate-200">Interactive Syllabus Engine</span>
             </div>
         </div>
-
-        <div>
-            <button onclick="toggleSandboxModal(true)" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-white text-slate-950 text-xs font-bold tracking-wide transition-all shadow-lg flex items-center gap-2 cursor-pointer">
-                <i class="fa-solid fa-book-open text-teal-600"></i>
-                <span>خَارِطَةُ المَفَاهِيم (STUDY SANDBOX)</span>
+        
+        <div class="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800">
+            <button id="viewToggleStudy" onclick="switchMainView('study')" class="px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 flex items-center space-x-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-arabic text-base">
+                <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 mr-1"></i> دِرَاسَة
+            </button>
+            <button id="viewToggleQuiz" onclick="switchMainView('quiz')" class="px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 flex items-center space-x-2 text-slate-400 hover:text-slate-200 font-arabic text-base">
+                <i data-lucide="help-circle" class="w-3.5 h-3.5 mr-1"></i> اِخْتِبَار
             </button>
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div class="flex-1 flex overflow-hidden">
         
-        <div class="lg:col-span-1 flex flex-col gap-4">
-            <div class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
-                <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-3 flex items-center justify-between">
-                    <span>CURRICULUM LEVELS</span>
-                    <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-teal-400" id="completion-stats-lbl">0% Tracked</span>
-                </h3>
-                
-                <div class="space-y-1.5" id="level-nav-matrix-container">
-                    </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-3 flex flex-col gap-6">
-            
-            <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800/80 flex flex-wrap items-center justify-between gap-4 shadow-xl">
-                <div class="flex items-center gap-3">
-                    <div id="arena-stage-tag" class="h-10 w-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-teal-400 font-bold text-sm tracking-wider">
-                        M1
-                    </div>
-                    <div class="text-left">
-                        <h3 id="arena-stage-title" class="text-sm font-bold text-white tracking-wide">Foundational Science Infrastructure</h3>
-                        <p id="arena-stage-desc" class="text-xs text-slate-400 mt-0.5">Test your analytical baseline tracking definitions.</p>
-                    </div>
+        <aside class="w-80 border-r border-slate-800/60 bg-slate-900 flex flex-col z-20">
+            <div class="p-4 border-b border-slate-800/40 bg-slate-950/40">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-mono font-bold tracking-wider text-slate-400 uppercase font-arabic text-sm">مَنَازِلُ الدِّرَاسَةِ</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-mono text-emerald-400 border border-slate-700/60">Node v1.3</span>
                 </div>
-                <div>
-                    <button onclick="restartActiveQuizModule()" class="px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 transition text-xs font-medium flex items-center gap-1.5 cursor-pointer">
-                        <i class="fa-solid fa-rotate-left text-slate-400"></i> Restart Level
+            </div>
+            
+            <nav id="sidebarNodes" class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
+                </nav>
+            
+            <div class="p-4 border-t border-slate-800/60 bg-slate-950/50 flex items-center justify-between text-xs">
+                <div class="flex items-center space-x-2">
+                    <div class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                    <span class="text-slate-400 font-mono">Status: Fully Validated</span>
+                </div>
+                <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-300 uppercase font-mono">Student</span>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col bg-slate-950 overflow-hidden relative">
+            
+            <div id="sandboxOverlay" class="absolute inset-0 bg-slate-950/95 z-40 flex flex-col transform translate-y-0 transition-transform duration-300 overflow-hidden">
+                <div class="h-14 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900/60">
+                    <div class="flex items-center space-x-3">
+                        <span id="sandboxTrackBadge" class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded text-xs font-mono font-arabic">عِلْمُ الْمَعَانِي</span>
+                        <h2 id="sandboxMainTitle" class="text-lg font-bold text-slate-100 font-arabic text-xl">دِرَاسَة</h2>
+                    </div>
+                    <button onclick="closeSandbox()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-medium rounded-lg text-slate-300 transition-all flex items-center font-arabic text-sm">
+                        <i data-lucide="x" class="w-3.5 h-3.5 mr-1.5 text-slate-400"></i> إِغْلَاق
                     </button>
                 </div>
-            </div>
 
-            <div id="quiz-gameplay-card" class="bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 p-6 sm:p-8 rounded-2xl border border-slate-800/90 shadow-2xl relative">
-                
-                <div class="w-full bg-slate-900 h-1 rounded-full overflow-hidden mb-6">
-                    <div id="quiz-metric-progress-bar" class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full w-0 transition-all duration-300"></div>
-                </div>
-
-                <div class="flex justify-between items-center mb-4 text-xs">
-                    <span id="quiz-question-counter-label" class="font-bold text-teal-400 uppercase tracking-widest">QUESTION 1 OF 5</span>
-                    <span class="text-slate-500 font-medium flex items-center gap-1">
-                        <i class="fa-solid fa-shield-halved text-teal-500"></i> Core Competency Evaluation
-                    </span>
-                </div>
-
-                <div class="text-right">
-                    <h2 id="quiz-arabic-question-text" class="text-xl sm:text-2xl font-bold text-white arabic-font leading-relaxed tracking-wide mb-2" dir="rtl">
-                        جاري تحميل نص السؤال البلاغي...
-                    </h2>
-                </div>
-                
-                <div class="text-right">
-                    <p id="quiz-english-question-text" class="text-xs sm:text-sm text-slate-400 font-medium tracking-wide border-r-2 border-teal-500/40 pr-3 mb-6 inline-block" dir="ltr">
-                        Loading context translation...
-                    </p>
-                </div>
-
-                <div id="quiz-arabic-options-grid" class="grid grid-cols-1 gap-3 pt-2">
+                <div class="flex-1 flex overflow-hidden">
+                    <div class="w-1/2 border-r border-slate-800/60 flex flex-col bg-slate-900/20">
+                        <div class="p-3 bg-slate-950/40 border-b border-slate-800 flex items-center space-x-2 overflow-x-auto custom-scrollbar" id="sandboxModulesTabs">
+                            </div>
+                        <div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar" id="sandboxConceptsContainer">
+                            </div>
                     </div>
 
-                <div id="quiz-instant-feedback-card" class="mt-6 p-5 rounded-xl border border-slate-800 bg-slate-950/80 hidden transition-all duration-300">
-                    <div class="flex items-start gap-3">
-                        <div id="feedback-status-badge-icon" class="h-6 w-6 rounded-full flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold"></div>
-                        <div class="flex-1">
-                            <h4 id="feedback-status-title" class="text-base font-black tracking-wide">Verification</h4>
-                            <p id="feedback-status-explanation" class="text-sm text-slate-300 mt-2 leading-relaxed font-normal"></p>
+                    <div class="w-1/2 flex flex-col bg-slate-950">
+                        <div class="p-4 border-b border-slate-800/60 bg-slate-900/30 flex items-center justify-between">
+                            <span class="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center">
+                                <i data-lucide="cpu" class="w-3.5 h-3.5 mr-1.5 text-emerald-400"></i> Sandbox Interactive Practice
+                            </span>
+                            <span id="sandboxQuizProgress" class="text-xs font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-900">Q: 1/3</span>
                         </div>
-                    </div>
-                    <div class="mt-5 flex justify-end">
-                        <button id="feedback-next-action-trigger" onclick="progressToNextQuizAsset()" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-200 text-slate-950 font-bold text-xs shadow-xl transition-all flex items-center gap-2 cursor-pointer">
-                            <span>Next Concept</span>
-                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </button>
+                        
+                        <div class="flex-1 p-6 flex flex-col justify-between overflow-y-auto custom-scrollbar" id="sandboxInteractiveZone">
+                            </div>
                     </div>
                 </div>
             </div>
 
-            <div id="quiz-victory-summary-card" class="bg-slate-900/90 border border-slate-800 p-8 rounded-2xl text-center space-y-6 shadow-2xl hidden">
-                <div class="w-16 h-16 bg-teal-500/10 border border-teal-500/30 text-teal-400 text-2xl rounded-full flex items-center justify-center mx-auto">
-                    <i class="fa-solid fa-award"></i>
-                </div>
-                <div class="space-y-1">
-                    <h3 class="text-xl font-bold text-white tracking-tight">Level Curriculum Track Validated</h3>
-                    <p class="text-xs text-slate-400 max-w-sm mx-auto">You have thoroughly evaluated your skills against this specific classical Arabic textbook node.</p>
-                </div>
-                <div class="flex justify-center gap-3">
-                    <button onclick="toggleSandboxModal(true)" class="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-800 text-xs font-semibold text-white hover:bg-slate-700 transition cursor-pointer">
-                        Browse Explanatory Sandbox
-                    </button>
-                    <button id="victory-advance-level-trigger" onclick="autoAdvanceToNextGlobalLevel()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-xs font-bold text-slate-950 shadow-lg hover:brightness-110 transition cursor-pointer">
-                        Advance to Next Level
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
-    <div id="sandbox-overlay-drawer" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 overflow-y-auto hidden transition-all duration-300 p-4 sm:p-6 md:p-8">
-        <div class="max-w-6xl w-full mx-auto bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col min-h-[85vh]">
-            
-            <div class="border-b border-slate-800 bg-slate-950/60 p-5 flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center gap-3 text-left">
-                    <div class="h-9 w-9 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-teal-400">
-                        <i class="fa-solid fa-vault"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-base font-bold text-white uppercase tracking-tight">خزانة البلاغية الشاملة (Exhaustive Study Sandbox)</h2>
-                        <p class="text-xs text-slate-400">Complete architectural data outline covering up to page 61 of Durūs al-Balāghah.</p>
-                    </div>
-                </div>
-                
-                <div>
-                    <button onclick="toggleSandboxModal(false)" class="px-4 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white transition text-xs font-bold cursor-pointer">
-                        Close Sandbox <i class="fa-solid fa-xmark ml-1"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-slate-950/30 border-b border-slate-800/60 p-2 flex flex-wrap gap-1.5" id="sandbox-tab-navigation-bar">
+            <div id="standardContentArea" class="flex-1 flex flex-col items-center justify-center p-8 opacity-0 transition-opacity duration-300 overflow-y-auto custom-scrollbar">
                 </div>
 
-            <div class="p-6 flex-1 custom-scrollbar overflow-y-auto max-h-[68vh]">
-                <div id="sandbox-exhaustive-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    </div>
-            </div>
-        </div>
+        </main>
     </div>
 
-    <footer class="border-t border-slate-950 bg-slate-950/40 py-4 px-8 text-center text-[10px] text-slate-600 tracking-widest">
-        PRODUCTION-GRADE INTERACTIVE ARABIC BALAGHAH ARCHITECTURE ENGINE &bull; 2026 EDITION
+    <footer class="h-10 border-t border-slate-800/60 bg-slate-900 flex items-center justify-between px-6 z-30 text-xs font-mono text-slate-500 font-arabic tracking-wider">
+        <div>مَعْهَدُ زَكَرِيَّا • اَلْبَلَاغَةُ</div>
+        <div class="text-emerald-500/60">مَعْهَدُ زَكَرِيَّا اَلْمُسْتَوَى الثَّالِثُ</div>
     </footer>
 
     <script>
-        // Compiled database covering concepts up to page 61 of Durūs al-Balāghah
-        const curriculumMasterDatabase = [
+        const syllabusData = [
             {
-                id: 1,
-                tag: "M1",
-                levelName: "Fasāḥah & Balāghah Foundations",
-                levelDesc: "Introduction to Arabic sciences, structural defects of words and phrases, and core rhetorical definitions.",
-                sandboxCards: [
-                    { title: "عُلُومُ اللِّسَانِ العَرَبِيِّ", category: "Arabic Linguistic Map", subtitle: "The 12 Arabic Sciences", englishDetail: "The Arabic language is systemized into 12 core disciplines. While Grammar (An-Naḥw) preserves sentence endings and Morphology (Aṣ-Ṣarf) preserves internal word structures, Rhetoric (Al-Balāghah) ensures that accurate speech matches the psychological and environmental context of the listener.", arabicExample: "عِلْمُ النَّحْوِ (يَعْصِمُ عَنِ الْخَطَأِ فِي الْإِعْرَابِ) وَعِلْمُ الْبَلَاغَةِ (يَعْصِمُ عَنِ الْخَطَأِ فِي دِقَّةِ التَّعْبِيرِ)." },
-                    { title: "تَنَافُرُ الْحُرُوفِ", category: "Fasāḥah Word Defects", subtitle: "Dissonance of Letters", englishDetail: "A internal phonetic defect within a single word caused by letters having clashing articulation points (Makhārij) too close or heavy together, making the word tongue-tying and difficult to pronounce fluently.", arabicExample: "لَفْظَةُ: «الْمُسْتَشْزِرَاتُ» (فِي مَدْحِ الشَّعْرِ لِامْرِئِ الْقَيْسِ، لِثِقَلِ تَنَاقُلِ اللِّسَانِ بَيْنَ الشِّينِ وَالزَّايِ)." },
-                    { title: "غَرَابَةُ اللَّفْظِ", category: "Fasāḥah Word Defects", subtitle: "Obscurity of Meaning", englishDetail: "Occurs when a word is rare, unfamiliar, or obscure, making its exact intended meaning unknown unless one digs deep into archaic dictionary manuscripts.", arabicExample: "قَوْلُ الشَّاعِرِ: «تَكأَكَأْتُمْ عَلَيَّ كَتَكأَكُئِكُمْ عَلَى ذِي جِنَّةٍ افْرَنْقِعُوا» (أَيْ اجْتَمَعْتُمْ عَلَيَّ.. انْصَرِفُوا)." },
-                    { title: "مُخَالَفَةُ الْقِيَاسِ", category: "Fasāḥah Word Defects", subtitle: "Violation of Analogy", englishDetail: "When a word structure violates established rules of morphological conjugation rules (Aṣ-Ṣarf) without an authentic classical precedent.", arabicExample: "لَفْظَةُ «الْأَجْلَلِ» فِي قَوْلِ الْعَجَّاجِ: «الْحَمْدُ للهِ الْعَلِيِّ الْأَجْلَلِ» (وَالْقِيَاسُ الصَّرْفِيُّ الصَّحِيحُ هُوَ الْإِدْغَامُ: الْأَجَلِّ)." },
-                    { title: "تَنَافُرُ الْكَلِمَاتِ مجْتَمِعَةً", category: "Fasāḥah Speech Defects", subtitle: "Dissonance of Combined Words", englishDetail: "A syntactic delivery defect where words are individually crisp and articulate, but when organized next to each other in sequence, they create a heavy phonetic barrier.", arabicExample: "مِثْلُ: «وَلَيْسَ قُرْبَ قَبْرِ حَرْبٍ قَبْرُ» (كُلُّ كَلِمَةٍ سَهْلَةٌ بمُفْرَدِهَا، لَكِنْ تَرْكِيبُهَا مَعًا يُحْدِثُ ثِقَلًا شَدِيدًا)." },
-                    { title: "ضَعْفُ التَّأْلِيفِ", category: "Fasāḥah Speech Defects", subtitle: "Weakness of Composition", englishDetail: "When a sentence setup directly violates the dominant and well-known rules of Arabic Syntax (An-Naḥw), such as returning a pronoun to a later unmentioned word in both text layout and internal ranking.", arabicExample: "مِثْلُ: «جَزَى بَنُوهُ أَبَا غِيلَانَ» (حَيْثُ عَادَ الضَّمِيرُ فِي الْفَاعِلِ بَنُوهُ عَلَى الْمَفْعُولِ الْمُتَأَخِّرِ لَفْظًا وَرُتْبَةً)." },
-                    { title: "التَّعْقِيدُ اللَّفْظِيُّ", category: "Fasāḥah Speech Defects", subtitle: "Verbal Complexity", englishDetail: "Obscurity caused by severe disruptions in standard word order (excessive structural presentation and delay, or disconnected attributes) that misleads the listener from mapping words to actual functions.", arabicExample: "قَوْلُ الْفَرَزْدَقِ: «وَمَا مِثْلُهُ فِي النَّاسِ إِلَّا مُمْلَّكًا.. أَبُو أُمِّهِ حَيٌّ أَبُوهُ يُقَارِبُهُ» (تَقْدِيمٌ وَتَأْخِيرٌ مُعَقَّدٌ لِلْغَايَةِ)." },
-                    { title: "التَّعْقِيدُ الْمَعْنَوِيُّ", category: "Fasāḥah Speech Defects", subtitle: "Conceptual Complexity", englishDetail: "When the structural logic of a metaphor or idiom is so twisted that the secondary implied meaning becomes impossible to logically track from the literal wording used.", arabicExample: "قَوْلُ الشَّاعِرِ: «سَأَطْلُبُ بُعْدَ الدَّارِ عَنْكُمْ لِتَقْرُبُوا.. وَتَسْكُبُ عَيْنَايَ الدُّمُوعَ لِتَجْمُدَا» (حَيْثُ كَنَّى عَنِ الْفَرَحِ بجُمُودِ الْعَيْنِ، وَهُوَ فِي لُغَةِ الْعَرَبِ كِنَايَةٌ عَنِ الْحُزْنِ وَالثَّكَلِ)." },
-                    { title: "بَلَاغَةُ الْكَلَامِ", category: "Balāghah Parameters", subtitle: "Rhetoric of Speech", englishDetail: "The precise science of tailoring standard eloquent, faultless Arabic constructs (Fasīḥ) so that they align seamlessly with the exact circumstantial context, audience mood, and setting variables.", arabicExample: "إِيجَازُ الْعِبَارَةِ فِي مَقَامِ التَّهْنِئَةِ أَوِ الْخَطَرِ، وَإِطَالَتُهَا فِي مَقَامِ الصُّلْحِ وَالتَّعْلِيمِ وَالدُّعَاءِ." }
-                ],
-                quizQuestions: [
+                id: "node_1",
+                title: "عِلْمُ الْمَعَانِي",
+                description: "The core architecture regulating sentence layouts, structural choice semantics, and linguistic contextual matching from foundational classical reference manuals.",
+                validated: true,
+                modules: [
                     {
-                        arQ: "مَا هُوَ عَيْبُ الْفَصَاحَةِ الَّذِي يَقَعُ فِي الْكَلِمَةِ الْمُفْرَدَةِ بِسَبَبِ تَقَارُبِ مَخَارِجِ الْحُرُوفِ؟",
-                        enSub: "Which vocabulary defect happens inside a single word due to overlapping phonetic output paths?",
-                        choices: [
-                            { ar: "تَنَافُرُ الْحُرُوفِ", en: "Dissonance of Letters (Phonetic friction)" },
-                            { ar: "غَرَابَةُ اللَّفْظِ", en: "Obscurity of the chosen terminology" },
-                            { ar: "ضَعْفُ التَّأْلِيفِ", en: "Weakness of Grammatical Construction" },
-                            { ar: "التَّعْقِيدُ الْمَعْنَوِيُّ", en: "Conceptual and Metaphorical Complexity" }
+                        tag: "م١",
+                        name: "مَدْخَلٌ إِلَى عِلْمِ الْبَلَاغَةِ",
+                        concepts: [
+                            {
+                                heading: "خَارِطَةُ الْعُلُومِ الْعَرَبِيَّةِ",
+                                description: "The overarching macro-structure mapping classical linguistic arts. Rhetoric stands as the pinnacle safeguarding structural elegance and semantic intent.",
+                                arabicTerm: "خَارِطَةُ الْعُلُومِ الْعَرَبِيَّةِ",
+                                [cite_start]source: "Introduction to Rhetoric Slides [cite: 198]",
+                                [cite_start]rule: "The 12 interconnected classical fields range across vocabulary, morphology (Sarf), syntax (Nahw), and rhetoric (Balaghah)[cite: 198].",
+                                exampleArabic: "عِلْمُ النَّحْوِ، عِلْمُ الصَّرْفِ، عِلْمُ الْبَلَاغَةِ، عِلْمُ الْأَدَبِ",
+                                [cite_start]exampleEnglish: "Syntax handles declensions; morphology guides constructions; rhetoric infuses eloquent contextual balance[cite: 198]."
+                            },
+                            {
+                                heading: "تَعْرِفُ عِلْمِ الْبَلَاغَةِ",
+                                description: "Linguistic reach paired with the absolute semantic requirement of adapting speech length, tone, and emphasis directly to environmental demands.",
+                                arabicTerm: "تَعْرِفُ الْبَلَاغَةِ",
+                                [cite_start]source: "First Steps Book [cite: 1306] [cite_start]/ Intro Slides [cite: 308]",
+                                [cite_start]rule: "Linguistically: To arrive or attain[cite: 308, 1306]. [cite_start]Rhetorically: Matching speech perfectly to context while sustaining absolute word clarity[cite: 1306].",
+                                exampleArabic: "مُطَابَقَةُ الْكَلَامِ لِمُقْتَضَى الْحَالِ مَعَ فَصَاحَتِهِ",
+                                [cite_start]exampleEnglish: "Adapting words elegantly: Elaborate details for a deep academic lecture versus sharp brevity during an emergency call[cite: 1308, 1309]."
+                            },
+                            {
+                                heading: "الْمَبَادِئُ الْعَشَرَةُ",
+                                description: "The formalized cognitive framework defining any classical science to structure student approach prior to full immersive study.",
+                                arabicTerm: "الْمَبَادِئُ الْعَشَرَةُ",
+                                [cite_start]source: "Introduction to Rhetoric Slides [cite: 229]",
+                                [cite_start]rule: "Every classical science has ten prerequisites: Definition, Subject, Fruits, Virtues, Relations, Founder, Name, Sources, Legal Ruling, and Issues[cite: 229, 248].",
+                                exampleArabic: "إِنَّ مَبَادِي كُلِّ فَنٍّ عَشَرَة: الْحَدُّ، وَالْمَوْضُوعُ، ثُمَّ الثَّمَرَة",
+                                [cite_start]exampleEnglish: "The baseline poem organizing structural taxonomy for clear student systemic orientation before engaging textual mechanics[cite: 247, 248]."
+                            },
+                            {
+                                heading: "مَفْهُومُ الْفَصَاحَةِ",
+                                description: "The prerequisite criteria of pure, natural linguistic vocalization that must be met before speech can ascend to true rhetoric status.",
+                                arabicTerm: "الْفَصَاحَةُ لُغَةً وَاصْطِلَاحاً",
+                                [cite_start]source: "Durūs al-Balāghah / First Steps Book [cite: 1306]",
+                                [cite_start]rule: "Words must be clean of heavy sound dissonance (Tanāfur), ungrammatical assembly (Da'f al-Ta'līf), and structural obscurity[cite: 1307].",
+                                exampleArabic: "وَلَيْسَ قُرْبَ قَبْرِ حَرْبٍ قَبْرُ",
+                                exampleEnglish: "This line avoids structural errors but fails Fasahah due to intense acoustic dissonance making verbalization heavy."
+                            },
+                            {
+                                heading: "أَقْسَامُ الْبَلَاغَةِ الثَّلَاثَةِ",
+                                description: "The three definitive branches engineered by classical masters to categorize syntactic semantic meanings, analytical imagery, and decorative elements.",
+                                arabicTerm: "عُلُومُ الْبَلَاغَةِ",
+                                [cite_start]source: "Intro Slides [cite: 437] [cite_start]/ First Steps Book [cite: 1312]",
+                                [cite_start]rule: "Balaghah is divided into Three Parts: Sentence Adaptations (Ma'anī), Core Imagery Variants (Bayān), and Aesthetic Textures (Badī')[cite: 437, 1312].",
+                                exampleArabic: "عِلْمُ الْمَعَانِي، عِلْمُ الْبَيَانِ، عِلْمُ الْبَدِيعِ",
+                                [cite_start]exampleEnglish: "Ma'anī targets sentence layout accuracy, Bayān tests methods of clarity, while Badī' handles stylistic balance[cite: 357, 359, 437]."
+                            }
                         ],
-                        correctIdx: 0,
-                        explanation: "The correct answer is item 1. 'Tanāfur al-Hurūf' is an issue where clashing articulation channels produce a heavy, awkward sound pattern within a single word, as seen clearly in the heavy, unfluent classical phrasing examples like «الْمُسْتَشْزِرَاتُ»."
+                        quizzes: [
+                            {
+                                question: "Which branch directly safeguards against errors in matching speech layout to the exact psychological state of the listener?",
+                                options: ["عِلْمُ الْبَيَانِ", "عِلْمُ الْمَعَانِي", "عِلْمُ الْبَدِيعِ", "عِلْمُ الصَّرْفِ"],
+                                answer: 1,
+                                feedback: "Correct. [cite_start]Ilmu al-Ma'ani tracks the exact methods needed to modify syntax layouts for varying listener contexts[cite: 358, 1318, 1320]."
+                            },
+                            {
+                                question: "What structural flaw does the poetic phrase 'وَلَيْسَ قُرْبَ قَبْرِ حَرْبٍ قَبْرُ' explicitly demonstrate in classical rhetoric?",
+                                options: ["ضَعْفُ التَّأْلِيفِ", "تَنَافُرُ الْكَلِمَاتِ", "التَّعْقِيدُ اللَّفْظِيُّ", "الْإِيجَازُ مُخِلٌّ"],
+                                answer: 1,
+                                feedback: "Correct. It suffers from heavy word/sound dissonance (Tanāfur al-Kalimāt) due to repeated closely arranged pronunciation exit points."
+                            }
+                        ]
                     },
                     {
-                        arQ: "أَيُّ العُيُوبِ التَّالِيَةِ يُخِلُّ بِفَصَاحَةِ الْكَلَامِ بِسَبَبِ مُخَالَفَةِ الْقَانُونِ النَّحْوِيِّ الْمَشْهُورِ؟",
-                        enSub: "Which structural issue breaches Fasāḥah because it openly breaks famous grammar rules?",
-                        choices: [
-                            { ar: "مُخَالَفَةُ الْقِيَاسِ", en: "Violation of Morphological Analogy rules" },
-                            { ar: "ضَعْفُ التَّأْلِيفِ", en: "Weakness of Compositional Syntax syntax layout" },
-                            { ar: "تَنَافُرُ الْكَلِمَاتِ", en: "Dissonance of Combined Words side-by-side" },
-                            { ar: "التَّعْقِيدُ اللَّفْظِيُّ", en: "Verbal Dislocation and Complexity" }
+                        tag: "م٢",
+                        name: "أَرْكَانُ الْجُمْلَةِ وَمُقَيِّدَاتُهَا",
+                        concepts: [
+                            {
+                                heading: "الْمُسْنَدُ وَالْمُسْنَدُ إِلَيْهِ",
+                                description: "The absolute basic structure of Arabic syntax. Every sentence relies completely on an assigned attribute and its subject core.",
+                                arabicTerm: "أَرْكَانُ الْجُمْلَةِ",
+                                [cite_start]source: "First Steps Book Page 8 [cite: 1331, 1332]",
+                                [cite_start]rule: "Musnad Ilayhi is the core subject (Mubtada' or Fā'il)[cite: 1332, 1333]. [cite_start]Musnad is the description or action assigned to it (Khabar or Fi'l)[cite: 1334].",
+                                exampleArabic: "الْحَمْدُ لِلَّهِ / قَامَ زَيْدٌ",
+                                exampleEnglish: "In the first, 'Al-Hamdu' is Musnad Ilayhi and 'lillāhi' is Musnad. [cite_start]In the second, 'Zayd' is Musnad Ilayhi[cite: 884, 1332, 1333]."
+                            },
+                            {
+                                heading: "تَقْسِيمُ الْجُمَلِ: اِسْمِيَّةٌ وَفِعْلِيَّةٌ",
+                                description: "The strategic structural choice between deploying nouns for continuity or verbs for dynamic time-bound event changes.",
+                                arabicTerm: "الْجُمْلَةُ الْإِسْمِيَّةُ وَالْفِعْلِيَّةُ",
+                                source: "First Steps Book Page 13 Table",
+                                rule: "Jumlah Ismiyyah provides structural permanence and stability (Thubūt). Jumlah Fi'liyyah highlights renewal, timing, and progress (Tajaddud).",
+                                exampleArabic: "الْحَمْدُ لِلَّهِ (ثُبُوتٌ) 🆚 يَقُومُ زَيْدٌ (تَجَدُّدٌ)",
+                                [cite_start]exampleEnglish: "Praise for Allah uses an Ismiyyah layout because it is timeless, permanent, and independent of chronological constraints[cite: 884]."
+                            },
+                            {
+                                heading: "مَفْهُومُ الْقُيُودِ فِي الْجُمْلَةِ",
+                                description: "Linguistic modifiers added to the core sentence skeleton to introduce critical constraints, contexts, and descriptive qualifiers.",
+                                arabicTerm: "الْقُيُودُ البَلَاغِيَّةُ",
+                                [cite_start]source: "First Steps Book Page 9-10 [cite: 1335, 1341]",
+                                [cite_start]rule: "Everything beyond the essential Musnad + Musnad Ilayhi is a Qayd (modifier), including objects, adverbs, and circumstantial states (Hāl)[cite: 1335, 1341].",
+                                exampleArabic: "وَلَا تَقْرَبُوا الصَّلَاةَ وَأَنْتُمْ سُكَارَى",
+                                exampleEnglish: "'And you are intoxicated' is a structural Hāl Qayd. [cite_start]While technically extra to base grammar, the entire core meaning depends on it[cite: 1341]."
+                            },
+                            {
+                                heading: "بَلَاغَةُ التَّعْرِيفِ وَالتَّنْكِيرِ",
+                                description: "The rhetorical goals behind designating nouns as definite or indefinite to subtly influence how the listener perceives importance.",
+                                arabicTerm: "الْمَعْرِفَةُ وَالنَّكِرَةُ",
+                                source: "First Steps Book Page 29",
+                                [cite_start]rule: "Definite forms (Ma'rifah) specify or honor[cite: 1325]. [cite_start]Indefinite forms (Nakirah) are leveraged for magnifying (Ta'dhīm), belittling, or general scope[cite: 1325].",
+                                exampleArabic: "هَذَا نَذِيرٌ مِنَ النُّذُرِ الْأُولَى",
+                                exampleEnglish: "Leaving 'Nadhīr' (warner) indefinite elevates its standing, magnifying its ultimate presence and terrifying status."
+                            }
                         ],
-                        correctIdx: 1,
-                        explanation: "The correct answer is item 2. 'Ḍaʿf al-Taʾlīf' means a sentence is structured against standard grammar rules, such as placing a attached pronoun that references a later word, which is illustrated in the syntax breakdown of «جَزَى بَنُوهُ أَبَا غِيلَانَ»."
-                    }
-                ]
-            },
-            {
-                id: 2,
-                tag: "M2",
-                levelName: "ʿIlm al-Maʿānī: The Informative Sentence",
-                levelDesc: "Differentiating Khabar from Inshāʾ, the secondary intents behind informational text delivery, and response archetypes.",
-                sandboxCards: [
-                    { title: "الْخَبَرُ وَالْإِنْشَاءُ", category: "Sentence Foundations", subtitle: "Khabar vs Inshāʾ", englishDetail: "Every utterance belongs to one of two structural domains. Khabar (Informative Speech) is any statement that can inherently be judged as true or false based on external reality. Inshāʾ (Creative/Requestive Speech) generates a state or command that did not exist prior to being spoken, making reality tests impossible.", arabicExample: "خَبَرٌ: ﴿قَدْ نَصَرَكُمُ اللَّهُ فِي مَوَاطِنَ كَثِيرَةٍ﴾ | إِنْشَاءٌ: ﴿وَأَقِيمُوا الصَّلَاةَ﴾." },
-                    { title: "فَائِدَةُ الْخَبَرِ", category: "Rhetorical Goals", subtitle: "Primary Informative Benefit", englishDetail: "Delivering a report for the sole purpose of informing the listener of a factual detail or reality they were completely unaware of before.", arabicExample: "مِثْلُ: «وُلِدَ النَّبِيُّ صلى الله عليه وسلم فِي عَامِ الْفِيلِ» (تُقَالُ لِمَنْ لَا يَعْلَمُ هَذِهِ الْحَقِيقَةَ التَّارِيخِيَّةَ)." },
-                    { title: "لَازِمُ فَائِدَةِ الْخَبَرِ", category: "Rhetorical Goals", subtitle: "Implication of the Informative Benefit", englishDetail: "Delivering a report where the listener already knows the fact perfectly well, but the speaker says it to demonstrate that they themselves are also aware of it.", arabicExample: "مِثْلُ أَنْ تَقُولَ لِطَالِبٍ: «أَنْتَ سَهِرْتَ الْبَارِحَةَ تَدْرُسُ» (لَيْسَ لِإِعْلَامِهِ بِمَا فَعَلَ، بَلْ لِإِظْهَارِ عِلْمِكَ بمَوْقِفِهِ)." },
-                    { title: "الْخَبَرُ الِابْتِدَائِيُّ", category: "Audience Calibration", subtitle: "Primary Khabar Mode", englishDetail: "Delivered when the listener has a neutral, completely open mind regarding the factual data point. The sentence is delivered naturally without any linguistic emphasis tools (Muʾakkidāt).", arabicExample: "﴿الْمَالُ وَالْبَنُونَ زِينَةُ الْحَيَاةِ الدُّنْيَا﴾ (خَبَرٌ خَالٍ مِنْ أَدَوَاتِ التَّوْكِيدِ لِعَدَمِ وُجُودِ إِنْكَارٍ)." },
-                    { title: "الْخَبَرُ الطَّلَبِيُّ", category: "Audience Calibration", subtitle: "Hesitant/Demanding Khabar Mode", englishDetail: "Delivered when the listener is visibly hesitant, doubtful, or questioning the information. It becomes necessary to strengthen the delivery by using a single emphasizing structural tool.", arabicExample: "﴿إِنَّ اللَّهَ غَفُورٌ رَّحِيمٌ﴾ (اسْتِخْدَامُ أَدَاةٍ وَاحِدَةٍ «إِنَّ» لِإِزَالَةِ التَّرَدُّدِ وَالظَّنِّ)." },
-                    { title: "الْخَبَرُ الْإِنْكَارِيُّ", category: "Audience Calibration", subtitle: "Denial Khabar Mode", englishDetail: "Delivered when the listener strongly denies or rejects the factual claim. The speaker must strengthen the sentence layout with multiple emphasis tools (like Inna, the Lam of emphasis, oaths, or heavy pronouns) depending on how strong the listener's denial is.", arabicExample: "﴿إِنَّآ إِلَيْكُم لَّمُرْسَلُونَ﴾ (اسْتِخْدَامُ «إِنَّ» وَالَّلَامِ الْمُزَحْلَقَةِ وَالْجُمْلَةِ الِاسْمِيَّةِ لِمُوَاجَهَةِ إِنْكَارِهِمْ)." }
-                ],
-                quizQuestions: [
-                    {
-                        arQ: "إِذَا كَانَ الْمُخَاطَبُ مُنْكِرًا لِلْخَبَرِ شَدِيدَ الرَّفْضِ لَهُ، فَكَمْ أَدَاةَ تَوْكِيدٍ يَجِبُ أَنْ تَتَضَمَّنَهَا الْجُمْلَةُ بَلَاغِيًّا؟",
-                        enSub: "If the targeted receiver strongly denies the statement, how many tools of emphasis must be used?",
-                        choices: [
-                            { ar: "لَا يَجُوزُ اسْتِخْدَامُ أَيِّ أَدَاةِ تَوْكِيدٍ", en: "No dynamic emphasis tools are allowed here" },
-                            { ar: "أَدَاةُ تَوْكِيدٍ وَاحِدَةٍ وُجُوبًا", en: "Exactly one emphasis tool is required" },
-                            { ar: "أَدَاتَا تَوْكِيدٍ أَوْ أَكْثَرُ حَسَبَ شِدَّةِ الْإِنْكَارِ", en: "Two or more emphasis particles depending on the severity of denial" },
-                            { ar: "يَتَحَوَّلُ الْكَلَامُ إِلَى إِنْشَاءٍ طَلَبِيٍّ", en: "The entire construct turns automatically into an Insha request" }
-                        ],
-                        correctIdx: 2,
-                        explanation: "The correct answer is item 3. An argumentative or denying audience requires 'Khabar Inkārī'. This demands multiple emphasis particles to dismantle their skepticism, as modeled in the structural escalation of the Qur'anic verse: ﴿إِنَّآ إِلَيْكُم لَّمُرْسَلُونَ﴾."
+                        quizzes: [
+                            {
+                                question: "In the sentence 'خَلَقَ اللَّهُ السَّمَاوَاتِ', which word functions structurally as the Musnad Ilayhi?",
+                                options: ["خَلَقَ", "اللَّهُ", "السَّمَاوَاتِ", "The hidden pronoun"],
+                                answer: 1,
+                                feedback: "Correct. [cite_start]In a verbal sentence (Jumlah Fi'liyyah), the Fā'il (actor) is always the Musnad Ilayhi[cite: 1332, 1333]."
+                            },
+                            {
+                                question: "What semantic property does the choice of a nominal sentence (Jumlah Ismiyyah) uniquely signal over a verbal sentence?",
+                                options: ["تَجَدُّدٌ (Renewal over time)", "ثُبُوتٌ (Permanence & Stability)", "خِطَابٌ (Direct audience address)", "تَأْكِيدٌ (Pure textual emphasis only)"],
+                                answer: 1,
+                                feedback: "Correct. Nominal sentences convey absolute permanence, continuity, and stability (Thubūt), unaffected by temporal constraints."
+                            }
+                        ]
                     },
                     {
-                        arQ: "مَا هُوَ الْغَرَضُ الْبَلَاغِيُّ فِي قَوْلِكَ لِمَنْ حَفِظَ الْقُرْآنَ كَامِلًا: «أَنْتَ حَفِظْتَ الْكِتَابَ الْعَزِيزَ»؟",
-                        enSub: "What secondary rhetorical goal is targeted when you tell a Hafidh: 'You have memorized the Holy Book'?",
-                        choices: [
-                            { ar: "فَائِدَةُ الْخَبَرِ", en: "Providing brand new, raw factual data" },
-                            { ar: "لَازِمُ فَائِدَةِ الْخَبَرِ", en: "Indicating that you are simply aware of their achievement" },
-                            { ar: "الْإِنْشَاءُ غَيْرُ الطَّلَبِيِّ", en: "Executing non-requestive creative communication" },
-                            { ar: "تَأْكِيدُ الذَّاتِ الْمُتَكَلِّمَةِ", en: "Standard generic emphasis of the active speaker" }
+                        tag: "م٣",
+                        name: "أَنْوَاعُ الْجُمَلِ وَالْأَسَالِيبُ",
+                        concepts: [
+                            {
+                                heading: "الْأَسْلُوبُ الْخَبَرِيُّ وَالْإِنْشَائِيُّ",
+                                description: "The primary binary classification dividing sentences into verifiable statements or performative demands and requests.",
+                                arabicTerm: "الْجُمْلَةُ الْخَبَرِيَّةُ وَالْإِنْشَائِيَّةُ",
+                                [cite_start]source: "First Steps Book Page 11-14 [cite: 883, 884]",
+                                [cite_start]rule: "Khabar can be verified as objectively true or false[cite: 883]. [cite_start]Inshā' is performative and cannot be classified as literally true or false[cite: 884].",
+                                exampleArabic: "الْحَمْدُ لِلَّهِ (خَبَرٌ) 🆚 اِعْدِلُوا هُوَ أَقْرَبُ لِلتَّقْوَى (إِنْشَاءٌ)",
+                                [cite_start]exampleEnglish: "'Praise belongs to Allah' conveys verifiable absolute fact[cite: 884]. 'Be just!' is a command, carrying an action-oriented requirement rather than a claim."
+                            },
+                            {
+                                heading: "الْإِنْشَاءُ الطَّلَبِيُّ وَغَيْرُ الطَّلَبِيُّ",
+                                description: "Sub-classification distinguishing between sentences that demand immediate external actions and those expressing internal emotive states.",
+                                arabicTerm: "أَقْسَامُ الْإِنْشَاءِ",
+                                source: "First Steps Book Page 14",
+                                rule: "Talabī demands a response (Amr, Nahy, Istifhām, Tamannī, Nidā'). Ghayr Talabī does not demand an active response (Ta'ajjub, Qasam, Madh).",
+                                exampleArabic: "يَا أَيُّهَا النَّاسُ كُلُوا (طَلَبِيٌّ) 🆚 لَعَمْرُكَ إِنَّهُمْ لَفِي سَكْرَتِهِمْ (غَيْرُ طَلَبِيٌّ)",
+                                [cite_start]exampleEnglish: "'O mankind, eat!' actively demands obedience, whereas an oath ('By your life!') showcases emphasis without a command[cite: 895]."
+                            },
+                            {
+                                heading: "أَنْوَاعُ الْإِنْشَاءِ الطَّلَبِيِّ",
+                                description: "The structural building blocks used to command, prohibit, question, long for, or call out within rhetoric discourse.",
+                                arabicTerm: "صِيَغُ الْإِنْشَاءِ الطَّلَبِيِّ",
+                                [cite_start]source: "First Steps Book Page 14-16 [cite: 895, 896]",
+                                [cite_start]rule: "Requires specific linguistic tools like the imperative form for Amr, the prohibitive form for Nahy, and dedicated particles for Istifhām[cite: 896].",
+                                exampleArabic: "أَقِيمُوا الصَّلَاةَ (أَمْرٌ) • وَلَا تَقْرَبُوا الزِّنَا (نَهْيٌ) • هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ (اِسْتِفْهَامٌ)",
+                                exampleEnglish: "Each represents a clear performative category changing the relationship between speaker and audience."
+                            },
+                            {
+                                heading: "الْخُرُوجُ عَنِ الْمَعْنَى الْحَقِيقِيِّ لِلْأَمْرِ وَالنَّهْيِ",
+                                description: "When commands and prohibitions shift away from literal mastery to channel softer emotional tones like prayer, advice, or warning.",
+                                arabicTerm: "الْمَعَانِي الْبَلَاغِيَّةُ لِلْأَمْرِ وَالنَّهْيِ",
+                                [cite_start]source: "First Steps Book Page 18-22 [cite: 924, 926]",
+                                [cite_start]rule: "Context can shift literal forms into metaphorical roles like Du'ā' (supplication), Iltimās (peer request), or Ta'jīz (proving incapacity)[cite: 924, 926].",
+                                exampleArabic: "رَبَّنَا لَا تُؤَاخِذْنَا (دُعَاءٌ) • فَأْتُوا بِسُورَةٍ مِنْ مِثْلِهِ (تَعْجِيزٌ)",
+                                [cite_start]exampleEnglish: "'Our Lord, do not punish us' is grammatically a prohibition, but rhetorically functions as a humble supplication[cite: 1365]."
+                            }
                         ],
-                        correctIdx: 1,
-                        explanation: "The correct answer is item 2. 'Lāzim Fāʾidat al-Khabar' is used when the listener already knows the fact. Saying it merely shows them that you are aware of their situation, just like telling an employee: «أَنْتَ دَاوَمْتَ مُبَكِّرًا الْيَوْمَ»."
-                    }
-                ]
-            },
-            {
-                id: 3,
-                tag: "M3",
-                levelName: "ʿIlm al-Maʿānī: Requestive Speech (Inshāʾ)",
-                levelDesc: "Exemplifying the 5 pillars of Talabī communication: Commands, Prohibitions, Questions, Longing, and Calling formulas.",
-                sandboxCards: [
-                    { title: "الْإِنْشَاءُ الطَّلَبِيُّ", category: "Inshāʾ Sub-divisions", subtitle: "Requestive Generative Speech", englishDetail: "Speech that requests or demands something that is not yet happening at the exact moment the phrase is uttered. It is divided into five specific formats: Command, Prohibition, Interrogation, Wishing, and Vocative Calling.", arabicExample: "مِثْلُ: ﴿لَا تَخَفْ وَلَا تَحْزَنْ﴾ (طَلَبُ الْكَفِّ عَنِ الْفِعْلِ فِي زَمَنِ التَّكَلُّمِ)." },
-                    { title: "الْأَمْرُ وَصِيَغُهُ الْأَرْبَعُ", category: "Inshāʾ Pillars", subtitle: "The Command & Its 4 Shapes", englishDetail: "Requesting an action to be done on a level of authority. It uses four specific grammatical tools: 1) The standard imperative verb form, 2) Present tense linked with the command Lam, 3) Verbal nouns acting as verbs, and 4) Masdar abstract nouns replacing an active verb.", arabicExample: "١) ﴿أَقِمِ الصَّلَاةَ﴾ ٢) ﴿لِيُنفِقْ ذُو سَعَةٍ﴾ ٣) «عَلَيْكَ بِنَفْسِكَ» ٤) ﴿فَصَرْبَ الرِّقَابِ﴾." },
-                    { title: "المَعَانِي المَجَازِيَّةُ لِلْأَمْرِ", category: "Figurative Shifts", subtitle: "Metaphorical Command Interpretations", englishDetail: "Commands often step away from literal religious or legal obligations and shift into secondary meanings like Supplication (from lower to higher), Equality Guidance (between peers), Defiance Challenge, or Warning/Threatening based on context clues.", arabicExample: "دُعَاءٌ: ﴿رَبِّ اغْفِرْ لِي﴾ | تَعْجِيزٌ: ﴿فَأْتُوا بسُورَةٍ مِّن مِّثْلِهِ﴾ | تَهْدِيدٌ: ﴿اعْمَلُوا مَا شِئْتُمْ﴾." },
-                    { title: "النَّهْيُ وَأَبْعَادُهُ الْبَلَاغِيَّةُ", category: "Inshāʾ Pillars", subtitle: "Prohibition Shifts", englishDetail: "Demanding the listener to stop or avoid a specific action using the negative tool 'La'. Just like commands, it can figuratively shift into meaning a prayer, friendly advice, despair, or mocking based on the tone and context.", arabicExample: "دُعَاءٌ: ﴿رَبَّنَا لَا تُؤَاخِذْنَا﴾ | إِرْشَادٌ: «لَا تَسْأَلِ النَّاسَ شَيْئًا» | تَيْئِيسٌ: ﴿لَا تَعْتَذِرُوا الْيَوْمَ﴾." },
-                    { title: "الِاسْتِفْهَامُ وَأَدَوَاتُهُ", category: "Inshāʾ Pillars", subtitle: "Interrogative Mechanics", englishDetail: "Seeking information about something unknown. Its tools are split into categories that ask about structural layout existence (like Hamzah and Hal) or names/attributes (like Man, Ma, Mata, Ayyana, Kayfa, Ayna, Anna, Kam, and Ayyu). These frequently shift into meanings of denial, amazement, or highlighting value.", arabicExample: "تَقْرِيرٌ: ﴿أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ﴾ | إِنْكَارٌ: ﴿أَغَيْرَ اللَّهِ أَتَّخِذُ وَلِيًّا﴾ | تَعَظِيمٌ: ﴿مَن ذَا الَّذِي يَشْفَعُ عِنْدَهُ﴾." }
-                ],
-                quizQuestions: [
-                    {
-                        arQ: "مَا هُوَ الْمَعْنَى الْبَلَاغِيُّ الْمَجَازِيُّ لِلْأَمْرِ فِي قَوْلِهِ تَعَالَى: {اعْمَلُوا مَا شِئْتُمْ}؟",
-                        enSub: "What hidden figurative meaning does the command imply in the verse 'Do what you wish'?",
-                        choices: [
-                            { ar: "الْوُجُوبُ الشَّرْعِيُّ", en: "Literal legal and moral obligation" },
-                            { ar: "التَّهْدِيدُ وَالْوَعِيدُ", en: "Threatening and warning of consequences" },
-                            { ar: "الِالْتِمَاسُ وَالتَّلَطُّفُ", en: "Friendly request among equal peers" },
-                            { ar: "الْإِبَاحَةُ التَّامَّةُ", en: "Complete, neutral permission" }
-                        ],
-                        correctIdx: 1,
-                        explanation: "The correct answer is item 2. The command here is used as a Threat ('Tahdīd'). God is not giving them permission to sin; rather, it warns them of impending consequences, which is rhetorically similar to telling a rebellious student: «أَهْمِلْ دُرُوسَكَ وَانْظُرْ عَاقِبَتَكَ»."
+                        quizzes: [
+                            {
+                                question: "How is the scriptural statement 'فَأْتُوا بِسُورَةٍ مِّن مِّثْلِهِ' classified rhetorically?",
+                                options: ["Literal command of obligation", "Metaphorical command for incapacitation (تَعْجِيزٌ)", "Supplication seeking mercy", "Informative Khabar statement"],
+                                answer: 1,
+                                feedback: "Correct. [cite_start]Challenging creation to produce a matching chapter is an imperative used for Ta'jīz (incapacitation)[cite: 1365]."
+                            },
+                            {
+                                question: "Which of these expressions represents a non-demanding (Ghayr Talabī) form of Jumlah Inshā'iyyah?",
+                                options: ["لَا تَحْزَنْ إِنَّ اللَّهَ مَعَنَا", "فَمَا أَصْبَرَهُمْ عَلَى النَّارِ (Ta'ajjub)", "أَيْنَ تَذْهَبُونَ", "يَا أَيُّهَا الْمُدَّثِّرُ"],
+                                answer: 1,
+                                feedback: "Correct. Exclamations of wonder (Ta'ajjub) are explicitly classed as Ghayr Talabī because they express marvel without demanding an action."
+                            }
+                        ]
                     },
                     {
-                        arQ: "أَيُّ الصِّيَغِ التَّالِيَةِ تُمَثِّلُ طَرِيقَةَ أَمْرٍ اسْتُخْدِمَ فِيهَا «الْمَصْدَرُ النَّائِبُ عَنْ فِعْلِ الْأَمْرِ»؟",
-                        enSub: "Which option represents a command executed by a verbal noun replacing the active imperative verb?",
-                        choices: [
-                            { ar: "{وَبِالْوَالِدَيْنِ إِحْسَانًا}", en: "And toward parents, demonstrate excellent treatment" },
-                            { ar: "{أَقِمِ الصَّلَاةَ لِدُلُوكِ الشَّمْسِ}", en: "Establish prayer at the decline of the sun" },
-                            { ar: "{لِيُنفِقْ ذُو سَعَةٍ مِّن سَعَتِهِ}", en: "Let the wealthy person spend from their wealth" },
-                            { ar: "«عَلَيْكُمْ بالصِّدْقِ»", en: "Adhere closely to truthfulness" }
+                        tag: "م٤",
+                        name: "تَرْتِيبُ الْجُمَلِ وَالْقَصْرُ",
+                        concepts: [
+                            {
+                                heading: "بَلَاغَةُ التَّقْدِيمِ وَالتَّأْخِيرِ",
+                                description: "The strategic reordering of standard structural sequences to draw focus or establish absolute restriction.",
+                                arabicTerm: "التَّقْدِيمُ وَالتَّأْخِيرُ",
+                                source: "First Steps Page 26 / Durūs al-Balāghah",
+                                [cite_start]rule: "Bringing forward a term that usually sits at the back signals restriction, exclusive rights, or immediate honorific value[cite: 1324].",
+                                exampleArabic: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+                                exampleEnglish: "By placing the object 'Iyyāka' before the verb 'na'budu', the sentence transforms from a standard statement into exclusive devotion."
+                            },
+                            {
+                                heading: "مَفْهُومُ حُرُوفِ الْعَطْفِ",
+                                description: "The concise study of connecting particles engineered to combine multi-layered thoughts cleanly without repeating long baseline code phrases.",
+                                arabicTerm: "بَلَاغَةُ حُرُوفِ الْعَطْفِ",
+                                source: "First Steps Book Page 40",
+                                [cite_start]rule: "Connectors like Wāw, Fā, and Thumma blend phrases smoothly while maintaining clean economy of phrase[cite: 1327].",
+                                exampleArabic: "خَلَقَكَ فَسَوَّاكَ فَعَدَلَكَ",
+                                exampleEnglish: "Using 'Fā' builds immediate, orderly transition, highlighting a seamless sequence of divine creation without structural bloat."
+                            },
+                            {
+                                heading: "طُرُقُ تَقْدِيمِ الْقَصْرِ",
+                                description: "The structural tools engineered to establish absolute exclusivity, locking attributes to a single subject.",
+                                arabicTerm: "أَسَالِيبُ الْقَصْرِ",
+                                source: "First Steps Book Page 37",
+                                [cite_start]rule: "Four standard methods construct Qaṣr: Negation + Exception, the tool 'Innamā', coordination via 'Lā/Bal', and sentence reordering (Taqdīm)[cite: 1326].",
+                                exampleArabic: "إِنَّمَا وَلِيُّكُمُ اللَّهُ • مَا هَذَا إِلَّا بَشَرٌ",
+                                exampleEnglish: "'Your protector is only Allah' establishes restriction immediately through 'Innamā', systematically filtering away all outside assumptions."
+                            }
                         ],
-                        correctIdx: 0,
-                        explanation: "The correct answer is item 1. The word «إِحْسَانًا» is an absolute noun (Maṣdar) replacing the underlying active verb «أَحْسِنُوا». This style is highly eloquent because it delivers the action directly without needing the verb frame itself."
-                    }
-                ]
-            },
-            {
-                id: 4,
-                tag: "M4",
-                levelName: "Qaṣr, Ījāz, & Iṭnāb Systems",
-                levelDesc: "Analyzing sentence restriction methods, brief concise writing (Ījāz), and purposeful elaboration (Iṭnāb).",
-                sandboxCards: [
-                    { title: "الْقَصْرُ: حَقِيقِيٌّ وَإِضَافِيٌّ", category: "Sentence Customization", subtitle: "Restriction Structures", englishDetail: "Limiting or restricting one thing to another using a specific structural method. It is divided into Objective Reality (Ḥaqīqī) or Relative/Contextual Reality (Iḍāfī), and categorized as limiting an object to an attribute, or an attribute to an object.", arabicExample: "حَقِيقِيٌّ: «لَا إِلَهَ إِلَّا اللَّهُ» | إِضَافِيٌّ: ﴿وَمَا مُحَمَّدٌ إِلَّا رَسُولٌ﴾ (أَيْ مَقْصُورٌ عَلَى الرِّسَالَةِ لَا الْخُلُودِ)." },
-                    { title: "طُرُقُ الْقَصْرِ الْأَرْبَعُ", category: "Sentence Customization", subtitle: "The 4 Core Tools of Qasṣr", englishDetail: "Restriction is built using four standard structural styles: 1) Negative particle combined with the exception 'Illa', 2) The specialized compound word 'Innama', 3) Using specific coordinating conjunction words like 'La', 'Bal', or 'Lakin', and 4) Advancing a sentence element ahead of its standard grammatical order.", arabicExample: "١) «مَا فَازَ إِلَّا عَلِيٌّ» ٢) ﴿إِنَّمَا يَخْشَى اللَّهَ مَنْ عِبَادِهِ الْعُلَمَاءُ﴾ ٣) «أَنَا كَاتِبٌ لَا شَاعِرٌ» ٤) ﴿إِيَّاكَ نَعْبُدُ﴾." },
-                    { title: "إِيجَازُ الْقَصْرِ", category: "Brevity Layouts", subtitle: "Inherent Brevity", englishDetail: "Packing deep layers of meaning into a short, structurally sound sentence without removing any words, driven purely by choosing rich, broad vocabulary terms.", arabicExample: "﴿وَلَكُمْ فِي الْقِصَاصِ حَيَاةٌ﴾ (عِبَارَةٌ قَصِيرَةٌ جِدًّا حَمَلَتْ عُمُومَ مَنَافِعِ حِفْظِ الدِّمَاءِ وَرَدْعِ الْقَتَلَةِ)." },
-                    { title: "إِيجَازُ الْحَذْفِ", category: "Brevity Layouts", subtitle: "Omission Brevity", englishDetail: "Shortening a statement by removing a specific word, noun phrase, or entire clause, while leaving an obvious contextual clue behind to signal exactly what was taken out.", arabicExample: "﴿وَاسْأَلِ الْقَرْيَةَ﴾ (أَيْ: وَاسْأَلْ «أَهْلَ» الْقَرْيَةِ، فَحُذِفَ الْمُضَافُ لِوُضُوحِ السِّيَاقِ الْعَقْلِيِّ)." },
-                    { title: "الْإِطْنَابُ وَمَسَوَّغَاتُهُ", category: "Elaboration Layouts", subtitle: "Purposeful Elaboration", englishDetail: "Intentionally extending words beyond the core meaning for a specific rhetorical purpose. If words are added without adding any new meaning or value, it is dismissed as wordy padding. Valid styles include stating a specific item after a general category, clarifying a vague idea, or inserting an explanatory phrase.", arabicExample: "ذِكْرُ الْخَاصِّ بَعْدَ الْعَامِّ: ﴿حَافِظُوا عَلَى الصَّلَوَاتِ وَالصَّلَاةِ الْوُسْطَى﴾ (تَنْبِيهًا عَلَى شَرَفِ الْخَاصِّ)." }
-                ],
-                quizQuestions: [
-                    {
-                        arQ: "مَا هُوَ طَرِيقُ الْقَصْرِ الْمُسْتَخْدَمُ فِي قَوْلِهِ تَعَالَى: {إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ}؟",
-                        enSub: "Which specific tool of rhetorical restriction is leveraged in this phrasing?",
-                        choices: [
-                            { ar: "النَّفْيُ وَالِاسْتِثْنَاءُ", en: "Negative particle combined with an exception rule" },
-                            { ar: "تَقْدِيمُ مَا حَقُّهُ التَّأْخِيرُ", en: "Advancing an element ahead of its standard order" },
-                            { ar: "أَدَاةُ الْحَصْرِ (إِنَّمَا)", en: "The explicit restriction tool 'Innama'" },
-                            { ar: "العَطْفُ بِأَدَوَاتِ الْقَصْرِ", en: "Conjunctions like 'La', 'Bal', and 'Lakin'" }
-                        ],
-                        correctIdx: 1,
-                        explanation: "The correct answer is item 2. The phrase advances the object pronoun «إِيَّاكَ» ahead of its active verb «نَعْبُدُ». Shifting an element forward restricts the action exclusively to that target, meaning: 'We worship You alone, and absolutely no one else'."
+                        quizzes: [
+                            {
+                                question: "What rhetorical function is unlocked by moving the prepositional phrase forward in 'لِلَّهِ الْأَمْرُ مِن قَبْلُ وَمِن بَعْدُ'?",
+                                options: ["Exclusive restriction (الْقَصْرُ / التَّخْصِيصُ)", "Soft dynamic metaphor", "Rhetorical simplification via drop", "Emotive structural doubt"],
+                                answer: 0,
+                                feedback: "Correct. [cite_start]Advancing the predicate (Taqdīm) restricts ultimate command solely to Allah, creating exclusive ownership[cite: 1324]."
+                            },
+                            {
+                                question: "Identify the primary linguistic method used to implement restriction (Qaṣr) in the statement 'مَا قَامَ إِلَّا زَيْدٌ'.",
+                                options: ["The structural tool اِنَّمَا", "Sentence layout reordering", "Negation paired with Exception (النَّفْيُ وَالِاسْتِثْنَاءُ)", "Coordinate particle substitution"],
+                                answer: 2,
+                                feedback: "Correct. [cite_start]Using 'Mā' (negation) paired directly with 'Illā' (exception) builds one of the strongest classical forms of absolute Qaṣr[cite: 1326]."
+                            }
+                        ]
                     },
                     {
-                        arQ: "عِنْدَمَا نَجِدُ كَلِمَاتٍ قَلِيلَةً تَحْمِلُ مَعَانِيَ غَزِيرَةً جِدًّا دُونَ حَذْفٍ لَفْظِيٍّ، مَاذَا يُسَمَّى هَذَا الْإِيجَازُ؟",
-                        enSub: "When a brief line holds dense layers of meaning without removing any words, what is it called?",
-                        choices: [
-                            { ar: "إِيجَازُ حَذْفٍ", en: "Brevity achieved by structural omission" },
-                            { ar: "إِيجَازُ قَصْرٍ", en: "Inherent brevity built into rich phrasing" },
-                            { ar: "إِطْنَابُ التَّقْرِيرِ", en: "Elaboration built to establish confirmation" },
-                            { ar: "أُسْلُوبُ الْمُسَاوَاةِ", en: "Balanced baseline sentence proportions" }
+                        tag: "م٥",
+                        name: "أَطْوَالُ الْكَلَامِ وَالْوَصْلُ وَالْفَصْلُ",
+                        concepts: [
+                            {
+                                heading: "أَطْوَالُ الْكَلَامِ: اَلْإِيجَازُ وَالْمُسَاوَاةُ وَالْإِطْنَابُ",
+                                description: "The ultimate metric balancing total word count against structural meaning density based on structural situational goals.",
+                                arabicTerm: "أَحْوَالُ لَفْظِ الْكَلَامِ",
+                                source: "First Steps Book Page 42",
+                                rule: "Musāwāh: Words perfectly match meaning. Ījāz: Brief phrasing holding massive meaning. Iṭnāb: Lengthy phrasing for added benefit.",
+                                exampleArabic: "وَلَا يَحِيقُ الْمَكْرُ السَّيِّئُ إِلَّا بِأَهْلِهِ (مُسَاوَاةٌ)",
+                                exampleEnglish: "The phrase lengths align precisely with their target meanings, achieving a balanced middle-way standard."
+                            },
+                            {
+                                heading: "أَقْسَامُ الْإِيجَازِ: قَصْرٌ وَحَذْفٌ",
+                                description: "The art of compression—either through inherently rich phrasing or by omitting words that the listener can easily deduce.",
+                                arabicTerm: "أَقْسَامُ الْإِيجَازِ",
+                                [cite_start]source: "First Steps Book Page 42 [cite: 1019, 1020]",
+                                [cite_start]rule: "Ījāz Qaṣr: Short phrases carrying vast meanings without drops[cite: 1019]. [cite_start]Ījāz Ḥadhf: Dropping an implicit word/sentence cleanly[cite: 1020].",
+                                exampleArabic: "وَلَكُمْ فِي الْقِصَاصِ حَيَاةٌ (قَصْرٌ) • وَاسْأَلِ الْقَرْيَةَ (حَذْفٌ)",
+                                [cite_start]exampleEnglish: "'Ask the town' implies asking the people of the town, dropping the noun while context perfectly preserves the core meaning[cite: 1020]."
+                            },
+                            {
+                                heading: "أَقْسَامُ الْإِطْنَابِ وَأَغْرَاضُهُ",
+                                description: "Purposeful extension of phrasing to add emphasis, clarify complexity, or show deep care, avoiding pointless wordiness.",
+                                arabicTerm: "طُرُقُ الْإِطْنَابِ",
+                                source: "First Steps Book Page 45",
+                                [cite_start]rule: "Achieved by adding specific detail after a general term, repeating phrases for comfort, or inserting parenthetical remarks[cite: 1086].",
+                                exampleArabic: "حَافِظُوا عَلَى الصَّلَوَاتِ وَالصَّلَاةِ الْوُسْطَى",
+                                [cite_start]exampleEnglish: "Naming the middle prayer explicitly after commands for all prayers singles it out, highlighting its immense virtue[cite: 1087]."
+                            },
+                            {
+                                heading: "مَحْوَرُ الْوَصْلِ وَالْفَصْلِ",
+                                description: "The delicate structural choice of when to bridge independent sentences with a conjunction or isolate them for impact.",
+                                arabicTerm: "الْوَصْلُ وَالْفَصْلُ",
+                                source: "Durūs al-Balāghah Manual Framework",
+                                rule: "Connect using 'Wāw' when sentences share an overarching grammatical direction; omit it when they are completely identical or unrelated.",
+                                exampleArabic: "وَإِذَا خَلَوْا إِلَى شَيَاطِينِهِمْ قَالُوا... اللَّهُ يَسْتَهْزِئُ بِهِمْ",
+                                exampleEnglish: "Omitting the 'Wāw' before 'Allāhu yastahzi'u' creates a sharp disconnect, highlighting instant divine retribution."
+                            }
                         ],
-                        correctIdx: 1,
-                        explanation: "The correct answer is item 2. 'Ījāz al-Qaṣr' achieves brevity through deep vocabulary choices rather than word removal, beautifully modeled in comprehensive lines like: ﴿أَلَا لَهُ الْخَلْقُ وَالْأَمْرُ﴾."
-                    }
-                ]
-            },
-            {
-                id: 5,
-                tag: "M5",
-                levelName: "ʿIlm al-Maʿānī: Al-Waṣl wa Al-Faṣl",
-                levelDesc: "Mastering the rules of joining phrases with 'Waw' (Waṣl) or leaving them split apart (Faṣl) up to Page 61.",
-                sandboxCards: [
-                    { title: "مَفْهُومُ الْوَصْلِ وَالْفَصْلِ", category: "Sentence Conjunctions", subtitle: "Connecting vs Splitting Sentences", englishDetail: "One of the most delicate areas of Arabic rhetoric. Al-Waṣl means linking two complete clauses together using the coordinating conjunction 'Waw'. Al-Faṣl means placing them back-to-back without any linking particle, driven by deep logical and contextual relationships between the ideas.", arabicExample: "وَصْلٌ: ﴿يَعْلَمُ مَا يَلِجُ فِي الْأَرْضِ وَمَا يَخْرُجُ مِنْهَا﴾ | فَصْلٌ: ﴿اللَّهُ يَسْتَهْزِئُ بِهِمْ﴾ (جَاءَتْ بَعْدَ قَوْلِهِمْ إِنَّمَا نَحْنُ مُسْتَهْزِئُونَ)." },
-                    { title: "كَمَالُ الِاتِّصَالِ", category: "Faṣl Conditions", subtitle: "Complete Integration", englishDetail: "The first scenario requiring total separation (Faṣl). This occurs when the second sentence is an exact repetition of the first, acts as a clarifying explanation of its core idea, or serves as a direct substitution for it.", arabicExample: "﴿عَقَدَ الْأَمْرُ لَدَيْكَ خَطَبَ حَضَرَ﴾، وَمِثْلُ: ﴿فَوَسْوَسَ إِلَيْهِ الشَّيْطَانُ قَالَ يَا آدَمُ﴾ (الْجُمْلَةُ الثَّانِيَةُ بَيَانٌ لِلْوَسْوَسَةِ فَلَمْ تُعْطَفْ)." },
-                    { title: "كَمَالُ الِانْقِطَاعِ", category: "Faṣl Conditions", subtitle: "Complete Disconnection", englishDetail: "The second scenario requiring total separation (Faṣl). This happens when two sentences are completely disconnected in meaning (e.g., one is a purely factual statement and the other is a creative command), or when there is no logical link connecting them.", arabicExample: "مِثْلُ: «مَاتَ زَيْدٌ كَتَبَ عَمْرٌو»، أَوْ: ﴿وَإِذَا خَلَوْا إِلَىٰ شَيَاطِينِهِمْ قَالُوا إِنَّا مَعَكُمْ.. اللَّهُ يَسْتَهْزِئُ بِهِمْ﴾." },
-                    { title: "شِبْهُ كَمَالِ الِاتِّصَالِ", category: "Faṣl Conditions", subtitle: "Semi-Complete Integration", englishDetail: "The third scenario requiring separation (Faṣl). This occurs when the second sentence functions as a direct answer to a logical question that naturally forms in the listener's mind after hearing the first sentence.", arabicExample: "﴿قَالُوا سَلَامًا قَالَ سَلَامٌ﴾، وَكَذَلِكَ: ﴿وَمَا أُبَرِّئُ نَفْسِي ۚ إِنَّ النَّفْسَ لَأَمَّارَةٌ بِالسُّوءِ﴾ (الْجُمْلَةُ الثَّانِيَةُ جَوَابٌ عَنْ سُؤَالٍ مُقَدَّرٍ)." },
-                    { title: "مَوَاضِعُ الْوَصْلِ", category: "Waṣl Conditions", subtitle: "Scenarios Demanding Connection", englishDetail: "Connecting sentences with the word 'Waw' becomes mandatory when: 1) Both clauses share the same structural grammatical location, 2) They match in sentence design (both informative or both creative) and share a clear logical link, or 3) Separating them would completely warp the intended meaning.", arabicExample: "مِثْلُ أَنْ تَقُولَ لِمَنْ سَأَلَكَ «هَلْ شُفِيَ أَخُوكَ؟»: «لَا وَعَافَاهُ اللَّهُ» (حَيْثُ اسْتُخْدِمَتِ الْوَاوُ لِمَنْعِ الْتِبَاسِ أَنَّكَ تَدْعُو عَلَيْهِ)." }
-                ],
-                quizQuestions: [
-                    {
-                        arQ: "مَا هُوَ السَّبَبُ الْبَلَاغِيُّ لِلْفَصْلِ (عَدَمِ الْعَطْفِ) فِي قَوْلِهِ تَعَالَى: {إِنَّ النَّفْسَ لَأَمَّارَةٌ بِالسُّوءِ} بَعْدَ عِبَارَةِ {وَمَا أُبَرِّئُ نَفْسِي}؟",
-                        enSub: "What rhetorical rationale justifies omitting a conjunction between these two adjacent clauses?",
-                        choices: [
-                            { ar: "كَمَالُ الِانْقِطَاعِ", en: "Complete disconnection in structural intent" },
-                            { ar: "شِبْهُ كَمَالِ الِاتِّصَالِ", en: "Semi-complete integration (Answering an implicit question)" },
-                            { ar: "كَمَالُ الِاتِّصَالِ لِلتَّأْكِيدِ", en: "Complete integration acting as direct textual repetition" },
-                            { ar: "مُرَاعَاةُ رُؤُوسِ الْآيَاتِ", en: "Strict maintenance of standard poetic rhyme patterns" }
-                        ],
-                        correctIdx: 1,
-                        explanation: "The correct answer is item 2. 'Shibh Kamāl al-Ittiṣāl' occurs when the second sentence answers an unstated question sparked by the first phrase. When the speaker says 'I do not clear myself,' the listener naturally wonders why. The next sentence answers: 'Indeed, the soul continuously commands evil,' removing the need for a connecting word like 'Waw'."
-                    },
-                    {
-                        arQ: "إِذَا سَأَلَكَ شَخْصٌ: «هَلْ برِئَ الْمَرِيضُ؟» وَأَرَدْتَ النَّفْيَ مَعَ الدُّعَاءِ لَهُ، كَيْفَ تَصُوغُ الْجَوَابَ بَلَاغِيًّا لِمَنْعِ اللَّبْسِ؟",
-                        enSub: "If asked if a patient recovered and you want to deny it while offering a prayer for them, how do you phrase it cleanly?",
-                        choices: [
-                            { ar: "لَا شَفَاهُ اللَّهُ", en: "Saying 'No, may God heal him' without a conjunction (creates ambiguity)" },
-                            { ar: "لَا وَشَفَاهُ اللَّهُ", en: "Saying 'No, and may God heal him' using a connecting Waw" },
-                            { ar: "شَفَاهُ اللَّهُ لَا لَمْ يَبْرَأْ", en: "May God heal him, no, he did not recover in order" },
-                            { ar: "الْإِيجَازُ بِحَذْفِ الدُّعَاءِ كُلِّيًّا", en: "Dropping the prayer entirely to optimize brevity parameters" }
-                        ],
-                        correctIdx: 1,
-                        explanation: "The correct answer is item 2. You must insert the connecting 'Waw' («لَا وَشَفَاهُ اللَّهُ») to cleanly separate the denial from your prayer. Leaving out the 'Waw' («لَا شَفَاهُ اللَّهُ») makes it sound like you are praying *against* them ('No, may God not heal him'), proving how vital proper connection rules are in daily speech."
+                        quizzes: [
+                            {
+                                question: "What exact structural variation is displayed in the scriptural phrase 'وَلَكُمْ فِي الْقِصَاصِ حَيَاةٌ'?",
+                                options: ["إِيجَازُ الْحَذْفِ", "إِيجَازُ الْقَصْرِ", "إِطْنَابٌ بِالتَّكْرَارِ", "مُسَاوَاةٌ خَالِصَةٌ"],
+                                answer: 1,
+                                feedback: "Correct. [cite_start]It packs monumental societal and legal implications into just a few words without omitting any terms, creating Ījāz Qaṣr[cite: 1019]."
+                            },
+                            {
+                                question: "In the verse 'حَافِظُوا عَلَى الصَّلَوَاتِ وَالصَّلَاةِ الْوُسْطَىٰ', what rhetorical intent guides the use of Iṭnāb?",
+                                options: ["Dropping complex verbs", "Mentioning the specific after the general (ذِكْرُ الْخَاصِّ بَعْدَ الْعَامِّ)", "Addressing lingering audience doubt", "Creating acoustic similarity"],
+                                answer: 1,
+                                feedback: "Correct. [cite_start]Singling out the middle prayer after mentioning all prayers underscores its exceptional value and importance[cite: 1086, 1087]."
+                            }
+                        ]
                     }
                 ]
             }
         ];
 
-        // Core Game Engine Architecture Variables State
-        let currentGlobalLevelId = 1;
-        let currentQuizQuestionIndex = 0;
-        let levelCompletionTrackingMap = { 1: false, 2: false, 3: false, 4: false, 5: false };
-        let activeQuestionHasBeenEvaluated = false;
+        // Core Architectural State Engine
+        let currentTrack = syllabusData[0];
+        let currentModuleIndex = 0;
+        let currentQuizIndex = 0;
+        let selectedOptionIndex = null;
+        let scoreCounter = 0;
+        let activeViewMode = 'study'; // 'study' or 'quiz'
 
-        // Initialize App Operations
-        window.addEventListener("DOMContentLoaded", () => {
-            renderSidebarNavigationElements();
-            renderSandboxNavigationTabs();
-            launchChallengeArenaModule(1);
-            refreshProgressMetricsUI();
+        // Initialization Pipeline
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderSidebarNodes();
+            loadTrackNode(syllabusData[0].id);
         });
 
-        // Trigger Sidebar Render Loop
-        function renderSidebarNavigationElements() {
-            const container = document.getElementById("level-nav-matrix-container");
+        function renderSidebarNodes() {
+            const container = document.getElementById("sidebarNodes");
             container.innerHTML = "";
-
-            curriculumMasterDatabase.forEach(lvl => {
-                const isSelected = lvl.id === currentGlobalLevelId;
-                const isDone = levelCompletionTrackingMap[lvl.id];
-                const btn = document.createElement("button");
-                btn.onclick = () => selectActiveGlobalLevel(lvl.id);
-                btn.className = `w-full text-left p-3.5 rounded-xl border transition-all duration-200 flex items-center justify-between gap-3 text-xs font-semibold cursor-pointer ${
-                    isSelected 
-                    ? 'bg-gradient-to-r from-slate-800 to-slate-900 border-slate-700 text-white shadow-xl' 
-                    : 'bg-transparent border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/30'
+            
+            syllabusData.forEach(track => {
+                const button = document.createElement("button");
+                button.className = `w-full text-left p-3.5 rounded-xl border transition-all duration-200 flex flex-col space-y-2 group ${
+                    currentTrack.id === track.id 
+                    ? 'bg-slate-900 border-emerald-500/30 shadow-lg shadow-emerald-950/20' 
+                    : 'bg-slate-950/40 border-slate-800/60 hover:border-slate-700/80 hover:bg-slate-900/40'
                 }`;
-
-                const badgeStyle = isSelected ? 'bg-teal-500 text-slate-950' : 'bg-slate-950 text-slate-500';
-
-                btn.innerHTML = `
-                    <div class="flex items-center gap-2.5 overflow-hidden">
-                        <span class="h-6 w-6 rounded-md font-black flex items-center justify-center text-[10px] tracking-wider shrink-0 ${badgeStyle}">${lvl.tag}</span>
-                        <div class="truncate text-left">
-                            <p class="truncate font-bold text-slate-200">${lvl.levelName}</p>
-                        </div>
-                    </div>
-                    <div class="shrink-0">
-                        ${isDone ? '<i class="fa-solid fa-circle-check text-teal-400"></i>' : '<i class="fa-solid fa-circle-notch text-slate-800"></i>'}
-                    </div>
-                `;
-                container.appendChild(btn);
-            });
-        }
-
-        // Handle Change Level Request
-        function selectActiveGlobalLevel(targetLvlId) {
-            currentGlobalLevelId = targetLvlId;
-            renderSidebarNavigationElements();
-            launchChallengeArenaModule(targetLvlId);
-        }
-
-        // Bootstraps Selected Quiz Module
-        function launchChallengeArenaModule(levelId) {
-            currentQuizQuestionIndex = 0;
-            activeQuestionHasBeenEvaluated = false;
-
-            const targetLvlData = curriculumMasterDatabase.find(l => l.id === levelId);
-            if (!targetLvlData) return;
-
-            document.getElementById("arena-stage-tag").innerText = targetLvlData.tag;
-            document.getElementById("arena-stage-title").innerText = targetLvlData.levelName;
-            document.getElementById("arena-stage-desc").innerText = targetLvlData.levelDesc;
-
-            document.getElementById("quiz-gameplay-card").classList.remove("hidden");
-            document.getElementById("quiz-victory-summary-card").classList.add("hidden");
-            document.getElementById("quiz-instant-feedback-card").classList.add("hidden");
-
-            populateActiveQuizQuestionUI();
-        }
-
-        // Render Current Question Data to Canvas
-        function populateActiveQuizQuestionUI() {
-            activeQuestionHasBeenEvaluated = false;
-            const targetLvlData = curriculumMasterDatabase.find(l => l.id === currentGlobalLevelId);
-            const activeQuestionObj = targetLvlData.quizQuestions[currentQuizQuestionIndex];
-            const totalCount = targetLvlData.quizQuestions.length;
-
-            // Update Progress Bar & Subtext Metrics
-            const percentageRatio = (currentQuizQuestionIndex / totalCount) * 100;
-            document.getElementById("quiz-metric-progress-bar").style.width = `${percentageRatio}%`;
-            document.getElementById("quiz-question-counter-label").innerText = `QUESTION ${currentQuizQuestionIndex + 1} OF ${totalCount}`;
-
-            // Insert Context Strings
-            document.getElementById("quiz-arabic-question-text").innerText = activeQuestionObj.arQ;
-            document.getElementById("quiz-english-question-text").innerText = activeQuestionObj.enSub;
-            document.getElementById("quiz-instant-feedback-card").classList.add("hidden");
-
-            // Build Options View Matrix
-            const optionsContainer = document.getElementById("quiz-arabic-options-grid");
-            optionsContainer.innerHTML = "";
-
-            activeQuestionObj.choices.forEach((choiceItem, choiceIdx) => {
-                const optionBtn = document.createElement("button");
-                optionBtn.onclick = () => verifyUserQuizChoice(choiceIdx);
-                optionBtn.id = `interactive-opt-node-${choiceIdx}`;
-                optionBtn.className = "w-full text-right p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:bg-slate-900 hover:border-slate-700 transition-all duration-150 flex flex-col gap-1 group cursor-pointer";
-
-                optionBtn.innerHTML = `
-                    <div class="flex items-center justify-between gap-4 w-full" dir="rtl">
-                        <span class="arabic-font text-base tracking-wide font-bold text-slate-200 group-hover:text-white flex-1 text-right">${choiceItem.ar}</span>
-                        <span class="h-5 w-5 rounded bg-slate-900 group-hover:bg-slate-800 text-slate-500 group-hover:text-slate-300 flex items-center justify-center font-bold text-[10px] shrink-0 font-sans">${choiceIdx + 1}</span>
-                    </div>
-                    <div class="w-full text-left pt-0.5 border-t border-slate-900/40 mt-1" dir="ltr">
-                        <span class="text-xs text-slate-400 group-hover:text-slate-300 font-medium block">${choiceItem.en}</span>
-                    </div>
-                `;
-                optionsContainer.appendChild(optionBtn);
-            });
-        }
-
-        // Execute Selection Validation Engine (Outputs Saheeh or Khata, with English Examples)
-        function verifyUserQuizChoice(userChoiceIndex) {
-            if (activeQuestionHasBeenEvaluated) return;
-            activeQuestionHasBeenEvaluated = true;
-
-            const targetLvlData = curriculumMasterDatabase.find(l => l.id === currentGlobalLevelId);
-            const questionObj = targetLvlData.quizQuestions[currentQuizQuestionIndex];
-            const totalCount = targetLvlData.quizQuestions.length;
-
-            // Lock Interactive Grids
-            for (let i = 0; i < questionObj.choices.length; i++) {
-                const targetBtn = document.getElementById(`interactive-opt-node-${i}`);
-                if (targetBtn) targetBtn.disabled = true;
-            }
-
-            const feedbackCard = document.getElementById("quiz-instant-feedback-card");
-            const iconBox = document.getElementById("feedback-status-badge-icon");
-            const titleBox = document.getElementById("feedback-status-title");
-            const descBox = document.getElementById("feedback-status-explanation");
-
-            const evaluationOutcome = userChoiceIndex === questionObj.correctIdx;
-
-            if (evaluationOutcome) {
-                document.getElementById(`interactive-opt-node-${userChoiceIndex}`).classList.add("border-teal-500", "bg-teal-950/20");
+                button.onclick = () => loadTrackNode(track.id);
                 
-                feedbackCard.className = "mt-6 p-5 rounded-xl bg-teal-950/20 border border-teal-800/40";
-                iconBox.className = "h-6 w-6 rounded-full bg-teal-500 text-slate-950 flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-md shadow-teal-950";
-                iconBox.innerHTML = '<i class="fa-solid fa-check"></i>';
-                titleBox.className = "text-base font-black tracking-wide text-teal-400 font-sans text-left";
-                titleBox.innerText = "صَحِيح";
-            } else {
-                document.getElementById(`interactive-opt-node-${userChoiceIndex}`).classList.add("border-rose-500", "bg-rose-950/20");
-                document.getElementById(`interactive-opt-node-${questionObj.correctIdx}`).classList.add("border-teal-600", "bg-teal-950/10");
-
-                feedbackCard.className = "mt-6 p-5 rounded-xl bg-slate-950 border border-slate-800";
-                iconBox.className = "h-6 w-6 rounded-full bg-rose-500 text-slate-950 flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-md shadow-rose-950";
-                iconBox.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-                titleBox.className = "text-base font-black tracking-wide text-rose-400 font-sans text-left";
-                titleBox.innerText = "خَطَأ";
-            }
-
-            // Always display the detailed English explanation filled with concept examples
-            descBox.className = "text-sm text-slate-300 mt-2 leading-relaxed font-normal text-left";
-            descBox.innerText = questionObj.explanation;
-
-            // Configure Action Button Labels
-            const nextBtn = document.getElementById("feedback-next-action-trigger");
-            if (currentQuizQuestionIndex === totalCount - 1) {
-                nextBtn.innerHTML = '<span>Finish Level</span> <i class="fa-solid fa-flag-checkered text-[10px]"></i>';
-            } else {
-                nextBtn.innerHTML = '<span>Next Concept</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>';
-            }
-
-            feedbackCard.classList.remove("hidden");
+                button.innerHTML = `
+                    <div class="flex items-center justify-between w-full">
+                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400 group-hover:text-emerald-400 font-arabic text-[11px]">
+                            ${track.title}
+                        </span>
+                        ${track.validated ? '<span class="text-[10px] text-emerald-400 font-mono flex items-center"><i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> Validated</span>' : ''}
+                    </div>
+                    <span class="text-sm font-bold tracking-tight text-slate-200">${track.title} Core Architecture</span>
+                    <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">${track.description}</p>
+                `;
+                container.appendChild(button);
+            });
+            lucide.createIcons();
         }
 
-        // Step Forward inside active collection arrays
-        function progressToNextQuizAsset() {
-            const targetLvlData = curriculumMasterDatabase.find(l => l.id === currentGlobalLevelId);
-            if (currentQuizQuestionIndex < targetLvlData.quizQuestions.length - 1) {
-                currentQuizQuestionIndex++;
-                populateActiveQuizQuestionUI();
-            } else {
-                // Level Mastered Successfully
-                levelCompletionTrackingMap[currentGlobalLevelId] = true;
-                refreshProgressMetricsUI();
-                renderSidebarNavigationElements();
-
-                document.getElementById("quiz-gameplay-card").classList.add("hidden");
-                const victoryBox = document.getElementById("quiz-victory-summary-card");
-
-                const advanceBtn = document.getElementById("victory-advance-level-trigger");
-                if (currentGlobalLevelId === curriculumMasterDatabase.length) {
-                    advanceBtn.classList.add("hidden");
-                } else {
-                    advanceBtn.classList.remove("hidden");
-                }
-
-                victoryBox.classList.remove("hidden");
-            }
+        function loadTrackNode(trackId) {
+            const found = syllabusData.find(t => t.id === trackId);
+            if (!found) return;
+            currentTrack = found;
+            currentModuleIndex = 0;
+            
+            renderSidebarNodes();
+            openSandbox();
         }
 
-        // Restart Active Module
-        function restartActiveQuizModule() {
-            launchChallengeArenaModule(currentGlobalLevelId);
+        function openSandbox() {
+            const overlay = document.getElementById("sandboxOverlay");
+            overlay.classList.remove("translate-y-full");
+            overlay.classList.add("translate-y-0");
+            
+            // Sync current configuration state labels
+            document.getElementById("sandboxTrackBadge").innerText = currentTrack.title;
+            
+            renderSandboxTabs();
+            renderModuleContent();
         }
 
-        // Trigger Auto Advance Sequence
-        function autoAdvanceToNextGlobalLevel() {
-            if (currentGlobalLevelId < curriculumMasterDatabase.length) {
-                selectActiveGlobalLevel(currentGlobalLevelId + 1);
-            }
+        function closeSandbox() {
+            const overlay = document.getElementById("sandboxOverlay");
+            overlay.classList.remove("translate-y-0");
+            overlay.classList.add("translate-y-full");
+            
+            switchMainView('study');
         }
 
-        // Re-evaluate Global Tracking Stats
-        function refreshProgressMetricsUI() {
-            const maxLevels = curriculumMasterDatabase.length;
-            let finishedCounter = 0;
-            for (let id in levelCompletionTrackingMap) {
-                if (levelCompletionTrackingMap[id] === true) finishedCounter++;
-            }
-
-            const masterRatio = Math.round((finishedCounter / maxLevels) * 100);
-            document.getElementById("completion-stats-lbl").innerText = `${masterRatio}% Verified`;
-        }
-
-        // Toggle Modal Visibility Drawer
-        function toggleSandboxModal(displayFlag) {
-            const sandboxModal = document.getElementById("sandbox-overlay-drawer");
-            if (displayFlag) {
-                sandboxModal.classList.remove("hidden");
-                loadSandboxConceptCategory(currentGlobalLevelId);
-            } else {
-                sandboxModal.classList.add("hidden");
-            }
-        }
-
-        // Render Sandbox Top Nav Segment Tabs
-        function renderSandboxNavigationTabs() {
-            const navBar = document.getElementById("sandbox-tab-navigation-bar");
-            navBar.innerHTML = "";
-
-            curriculumMasterDatabase.forEach(lvl => {
-                const tabBtn = document.createElement("button");
-                tabBtn.id = `sandbox-tab-trigger-node-${lvl.id}`;
-                tabBtn.onclick = () => loadSandboxConceptCategory(lvl.id);
-                tabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-800 bg-slate-950 text-slate-400 hover:text-white transition cursor-pointer";
-                tabBtn.innerText = `${lvl.tag}: ${lvl.levelName}`;
-                navBar.appendChild(tabBtn);
+        function renderSandboxTabs() {
+            const tabsContainer = document.getElementById("sandboxModulesTabs");
+            tabsContainer.innerHTML = "";
+            
+            currentTrack.modules.forEach((mod, idx) => {
+                const tab = document.createElement("button");
+                tab.className = `px-4 py-2 rounded-lg font-mono text-xs font-bold border transition-all shrink-0 flex items-center space-x-2 ${
+                    currentModuleIndex === idx
+                    ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-400 shadow-sm'
+                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                }`;
+                tab.onclick = () => {
+                    currentModuleIndex = idx;
+                    currentQuizIndex = 0;
+                    selectedOptionIndex = null;
+                    renderSandboxTabs();
+                    renderModuleContent();
+                };
+                tab.innerHTML = `<span class="font-arabic text-sm">${mod.tag}</span> <span class="text-[10px] opacity-60 font-sans tracking-wide">| ${mod.name}</span>`;
+                tabsContainer.appendChild(tab);
             });
         }
 
-        // Load Targeted Set into Sandbox View Matrix (English Primary Framework)
-        function loadSandboxConceptCategory(levelId) {
-            curriculumMasterDatabase.forEach(l => {
-                const node = document.getElementById(`sandbox-tab-trigger-node-${l.id}`);
-                if (node) {
-                    if (l.id === levelId) {
-                        node.className = "px-3 py-1.5 rounded-lg text-xs font-black border border-teal-500/40 bg-teal-500/10 text-teal-400 transition cursor-pointer";
-                    } else {
-                        node.className = "px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-800 bg-slate-950 text-slate-400 hover:text-white transition cursor-pointer";
-                    }
-                }
-            });
-
-            const levelData = curriculumMasterDatabase.find(l => l.id === levelId);
-            const gridContainer = document.getElementById("sandbox-exhaustive-cards-grid");
-            gridContainer.innerHTML = "";
-
-            levelData.sandboxCards.forEach(card => {
-                const cardEl = document.createElement("div");
-                cardEl.className = "bg-slate-950/80 border border-slate-800 p-5 rounded-xl flex flex-col justify-between space-y-4 hover:border-slate-700/60 transition-all text-left";
-
-                cardEl.innerHTML = `
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-start gap-4">
-                            <div>
-                                <h4 class="text-base font-black text-white tracking-wide arabic-font mb-0.5" dir="rtl">${card.title}</h4>
-                                <span class="text-[11px] text-teal-400 font-semibold tracking-wide uppercase block">${card.subtitle}</span>
-                            </div>
-                            <span class="text-[10px] bg-slate-900 border border-slate-800 text-slate-400 px-2.5 py-0.5 rounded-full font-bold">${card.category}</span>
-                        </div>
-                        
-                        <div class="bg-slate-900/70 p-3.5 rounded-xl border border-slate-900 text-center shadow-inner" dir="rtl">
-                            <p class="text-xl sm:text-2xl text-emerald-400 font-bold arabic-font leading-relaxed tracking-wide">${card.arabicExample}</p>
-                        </div>
-
+        function renderModuleContent() {
+            const mod = currentTrack.modules[currentModuleIndex];
+            
+            // Build Left Column Concept Data Cards
+            const conceptsContainer = document.getElementById("sandboxConceptsContainer");
+            conceptsContainer.innerHTML = "";
+            
+            mod.concepts.forEach(concept => {
+                const card = document.createElement("div");
+                card.className = "p-5 rounded-xl border border-slate-800/80 bg-slate-900/40 space-y-4 hover:border-slate-700/60 transition-all";
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
                         <div class="space-y-1">
-                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block">Structural Rule & Definition</span>
-                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">${card.englishDetail}</p>
+                            <h4 class="text-sm font-bold text-slate-200 tracking-tight">${concept.heading}</h4>
+                            <span class="text-[10px] font-mono text-slate-500 block">${concept.source}</span>
+                        </div>
+                        <span class="px-2.5 py-1 bg-slate-950 text-emerald-400 border border-slate-800 rounded-lg text-xs font-arabic tracking-wide select-all font-bold">
+                            ${concept.arabicTerm}
+                        </span>
+                    </div>
+                    
+                    <p class="text-xs text-slate-400 leading-relaxed">${concept.description}</p>
+                    
+                    <div class="p-3 bg-slate-950/80 border border-slate-800/60 rounded-lg space-y-1">
+                        <span class="text-[10px] font-mono text-emerald-500 uppercase tracking-widest block">Operational Rule</span>
+                        <p class="text-xs text-slate-300 leading-relaxed">${concept.rule}</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-900 border-l-2 border-emerald-500/40 rounded-r-lg space-y-2">
+                        <div class="text-right font-arabic text-xl font-bold tracking-wide leading-loose text-slate-100 dir-rtl select-all" style="direction: rtl;">
+                            ${concept.exampleArabic}
+                        </div>
+                        <div class="text-xs text-slate-400 italic">
+                            ${concept.exampleEnglish}
                         </div>
                     </div>
                 `;
-                gridContainer.appendChild(cardEl);
+                conceptsContainer.appendChild(card);
             });
+
+            // Build Right Column Interactive Evaluation Panel
+            renderInteractiveQuizZone();
+        }
+
+        function renderInteractiveQuizZone() {
+            const mod = currentTrack.modules[currentModuleIndex];
+            const quizProgress = document.getElementById("sandboxQuizProgress");
+            const zone = document.getElementById("sandboxInteractiveZone");
+            
+            if (!mod.quizzes || mod.quizzes.length === 0) {
+                quizProgress.classList.add("hidden");
+                zone.innerHTML = `
+                    <div class="flex-1 flex flex-col items-center justify-center text-center p-8">
+                        <i data-lucide="info" class="w-8 h-8 text-slate-600 mb-3"></i>
+                        <p class="text-sm text-slate-400">No verification checks assigned to this node track module.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            quizProgress.classList.remove("hidden");
+            quizProgress.innerText = `Q: ${currentQuizIndex + 1}/${mod.quizzes.length}`;
+            
+            const quiz = mod.quizzes[currentQuizIndex];
+            selectedOptionIndex = null;
+            
+            zone.innerHTML = `
+                <div class="space-y-6 flex-1">
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-0.5 text-[10px] font-mono uppercase bg-slate-800 text-slate-400 border border-slate-700 rounded">Verification Quest</span>
+                        </div>
+                        <p class="text-sm font-medium text-slate-200 leading-relaxed">${quiz.question}</p>
+                    </div>
+                    
+                    <div class="space-y-2.5" id="quizOptionsWrapper">
+                        ${quiz.options.map((opt, i) => `
+                            <button onclick="selectQuizOption(${i})" id="opt_${i}" class="w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-900/40 text-xs font-medium text-slate-300 hover:bg-slate-900 hover:border-slate-700 transition-all flex items-center justify-between group">
+                                <span class="font-arabic text-sm">${opt}</span>
+                                <div class="h-4 w-4 rounded-full border border-slate-700 flex items-center justify-center group-hover:border-emerald-500/40 transition-all">
+                                    <div class="h-2 w-2 rounded-full bg-transparent" id="dot_${i}"></div>
+                                </div>
+                            </button>
+                        `).join('')}
+                    </div>
+                    
+                    <div id="quizFeedbackSlot" class="hidden p-4 rounded-xl border text-xs leading-relaxed transition-all"></div>
+                </div>
+
+                <div class="pt-4 border-t border-slate-800/60 bg-slate-950 mt-4 flex items-center justify-between">
+                    <button id="actionQuizBtn" onclick="evaluateQuizSelection()" disabled class="w-full py-3 bg-slate-800 text-slate-500 border border-slate-700/60 text-xs font-bold rounded-xl transition-all cursor-not-allowed uppercase tracking-wider flex items-center justify-center space-x-2">
+                        <span>Evaluate Response</span>
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function selectQuizOption(index) {
+            const quiz = currentTrack.modules[currentModuleIndex].quizzes[currentQuizIndex];
+            selectedOptionIndex = index;
+            
+            // Reset selection style variations
+            quiz.options.forEach((_, i) => {
+                const btn = document.getElementById(`opt_${i}`);
+                const dot = document.getElementById(`dot_${i}`);
+                if (btn && dot) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-900/40 text-xs font-medium text-slate-300 hover:bg-slate-900 hover:border-slate-700 transition-all flex items-center justify-between group";
+                    dot.className = "h-2 w-2 rounded-full bg-transparent";
+                }
+            });
+
+            // Set active focus style states
+            const activeBtn = document.getElementById(`opt_${index}`);
+            const activeDot = document.getElementById(`dot_${index}`);
+            if (activeBtn && activeDot) {
+                activeBtn.className = "w-full text-left p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/5 text-emerald-300 transition-all flex items-center justify-between group";
+                activeDot.className = "h-2 w-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400";
+            }
+
+            // Enable action evaluation key trigger
+            const actionBtn = document.getElementById("actionQuizBtn");
+            actionBtn.disabled = false;
+            actionBtn.className = "w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-emerald-950/40 uppercase tracking-wider flex items-center justify-center space-x-2 cursor-pointer";
+        }
+
+        function evaluateQuizSelection() {
+            const mod = currentTrack.modules[currentModuleIndex];
+            const quiz = mod.quizzes[currentQuizIndex];
+            const feedbackSlot = document.getElementById("quizFeedbackSlot");
+            const actionBtn = document.getElementById("actionQuizBtn");
+            
+            feedbackSlot.classList.remove("hidden");
+            
+            // Guard loop to see if user response matches target answer index
+            if (selectedOptionIndex === quiz.answer) {
+                scoreCounter++;
+                feedbackSlot.className = "p-4 rounded-xl border bg-emerald-500/5 border-emerald-500/20 text-emerald-400 text-xs leading-relaxed";
+                feedbackSlot.innerHTML = `<div class="flex items-start space-x-2"><i data-lucide="check-circle" class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0"></i> <span>${quiz.feedback}</span></div>`;
+            } else {
+                feedbackSlot.className = "p-4 rounded-xl border bg-rose-500/5 border-rose-500/20 text-rose-400 text-xs leading-relaxed";
+                feedbackSlot.innerHTML = `<div class="flex items-start space-x-2"><i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 text-rose-400 shrink-0"></i> <span>Incorrect answer selection. Review the structural guidance rules on the left and re-examine syntax choices.</span></div>`;
+            }
+            
+            lucide.createIcons();
+            
+            // Reconfigure button actions to handle step progression safely
+            if (currentQuizIndex < mod.quizzes.length - 1) {
+                actionBtn.onclick = () => {
+                    currentQuizIndex++;
+                    renderInteractiveQuizZone();
+                };
+                actionBtn.innerHTML = `<span class="font-arabic text-base">اَلتَّالِي</span>`;
+            } else {
+                actionBtn.onclick = () => finishModuleLevelTrack();
+                actionBtn.innerHTML = `<span class="font-arabic text-base">إِنْهَاء</span>`;
+            }
+        }
+
+        function finishModuleLevelTrack() {
+            const mod = currentTrack.modules[currentModuleIndex];
+            const zone = document.getElementById("sandboxInteractiveZone");
+            document.getElementById("sandboxQuizProgress").classList.add("hidden");
+            
+            zone.innerHTML = `
+                <div class="flex-1 flex flex-col items-center justify-center text-center p-6 space-y-6">
+                    <div class="h-16 w-16 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl flex items-center justify-center text-emerald-400 shadow-xl shadow-emerald-950/60 animate-bounce">
+                        <i data-lucide="award" class="w-8 h-8"></i>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <h3 class="text-xl font-bold tracking-tight text-slate-100 font-arabic text-2xl">مُكْتَمَل</h3>
+                        <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
+                            You have completed all current evaluations and thoroughly analyzed this node block.
+                        </p>
+                    </div>
+
+                    <div class="w-full pt-4 space-y-2">
+                        <button onclick="currentModuleIndex = 0; renderSandboxTabs(); renderModuleContent();" class="w-full py-2.5 border border-slate-800 bg-slate-900/60 hover:bg-slate-900 hover:border-slate-700 text-slate-300 font-mono text-xs rounded-xl transition-all font-arabic text-sm">
+                            دِرَاسَة
+                        </button>
+                        <button onclick="closeSandbox()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold rounded-xl transition-all shadow-md shadow-emerald-900/20 font-arabic text-sm">
+                            تَقَدُّم
+                        </button>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function switchMainView(view) {
+            activeViewMode = view;
+            
+            const btnStudy = document.getElementById("viewToggleStudy");
+            const btnQuiz = document.getElementById("viewToggleQuiz");
+            const standardArea = document.getElementById("standardContentArea");
+            
+            // Sync toggler view states
+            if (view === 'study') {
+                btnStudy.className = "px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 flex items-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-arabic text-base";
+                btnQuiz.className = "px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 flex items-center text-slate-400 hover:text-slate-200 font-arabic text-base";
+                openSandbox();
+            } else {
+                btnQuiz.className = "px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 flex items-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-arabic text-base";
+                btnStudy.className = "px-4 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 flex items-center text-slate-400 hover:text-slate-200 font-arabic text-base";
+                
+                // Close overlay layout if active to present full view baseline testing panel
+                document.getElementById("sandboxOverlay").classList.remove("translate-y-0");
+                document.getElementById("sandboxOverlay").classList.add("translate-y-full");
+                
+                renderStandardQuizEngine();
+            }
+        }
+
+        function renderStandardQuizEngine() {
+            const standardArea = document.getElementById("standardContentArea");
+            standardArea.classList.remove("opacity-0");
+            standardArea.classList.add("opacity-100");
+            
+            // Accumulate all core modules quizzes into a unified test deck layout
+            let totalQuestionsDeck = [];
+            syllabusData.forEach(track => {
+                track.modules.forEach(m => {
+                    if (m.quizzes) totalQuestionsDeck.push(...m.quizzes);
+                });
+            });
+
+            standardArea.innerHTML = `
+                <div class="max-w-2xl w-full bg-slate-900/40 border border-slate-800 rounded-2xl p-8 space-y-6 shadow-xl shadow-slate-950">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div class="space-y-1">
+                            <h2 class="text-lg font-bold text-slate-200">Comprehensive Assessment Matrix</h2>
+                            <p class="text-xs text-slate-400">Evaluating multi-source tracking fields up to page 61 of Durūs al-Balāghah.</p>
+                        </div>
+                        <span class="px-2.5 py-1 bg-emerald-950 text-emerald-400 border border-emerald-900 rounded-lg text-xs font-mono">
+                            Pool size: ${totalQuestionsDeck.length} Items
+                        </span>
+                    </div>
+
+                    <div class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
+                        ${totalQuestionsDeck.map((q, idx) => `
+                            <div class="p-4 rounded-xl border border-slate-800/60 bg-slate-950/40 space-y-3">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-[10px] font-mono text-emerald-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">Q-${idx + 1}</span>
+                                    <p class="text-xs text-slate-300 font-medium">${q.question}</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 pl-7">
+                                    ${q.options.map(o => `
+                                        <div class="p-2 bg-slate-900/80 rounded border border-slate-800/40 text-[11px] text-slate-400 font-arabic">${o}</div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-xs font-mono text-slate-500">Press 'دِرَاسَة' on top to toggle detailed sandbox back open anytime.</span>
+                        <button onclick="switchMainView('study')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all shadow-lg shadow-emerald-950 font-arabic text-sm">
+                            دِرَاسَة
+                        </button>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
         }
     </script>
 </body>
 </html>
+
+```
