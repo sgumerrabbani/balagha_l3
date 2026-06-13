@@ -3,138 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ميدان مراجعة علوم البلاغة</title>
+    <title>ميدان مراجعة علوم البلاغة - Balaghah Review</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #060a12; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; } /* Off-white bg */
         .arabic-font { font-family: 'Amiri', serif; }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #0b1329; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #334155; }
-        .ilm-section-header { background: linear-gradient(90deg, rgba(20,184,166,0.08) 0%, transparent 100%); border-left: 3px solid #14b8a6; }
-        .subsection-badge { background: rgba(20,184,166,0.1); border: 1px solid rgba(20,184,166,0.25); }
-        .concept-bullet { color: #5eead4; }
-        .filter-btn.active { background: rgba(20,184,166,0.15); border-color: rgba(20,184,166,0.5); color: #5eead4; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #15803d; } 
+        .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .filter-btn.active { background: #f0fdf4; border-color: #86efac; color: #15803d; }
     </style>
 </head>
-<body class="text-slate-200 min-h-screen flex flex-col antialiased selection:bg-teal-500 selection:text-slate-950">
+<body class="text-slate-800 min-h-screen flex flex-col antialiased selection:bg-green-200 selection:text-green-900 custom-scrollbar">
 
-<header class="border-b border-slate-800/80 bg-slate-900/40 backdrop-blur-xl sticky top-0 z-40 px-4 py-3 sm:px-8 flex items-center justify-between gap-4">
-    <div class="flex items-center gap-3">
-        <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-teal-500/10">ب</div>
-        <div class="text-left">
-            <h1 class="text-sm font-bold tracking-tight text-white uppercase">مِيدَانُ البَلَاغَةِ</h1>
-            <p class="text-[11px] text-slate-400 font-medium">Advanced Rhetoric Review Arena</p>
+<header class="bg-white border-b border-green-100 shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center h-auto sm:h-16 py-3 sm:py-0 gap-4 sm:gap-0">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center shadow-inner overflow-hidden border border-green-200 shrink-0">
+                    <img src="mahad-logo.png" alt="Mahad Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <i class="fa-solid fa-building-columns text-green-700 text-sm hidden"></i>
+                </div>
+                <div class="text-left" dir="ltr">
+                    <h1 class="text-base font-bold tracking-tight text-green-800 uppercase arabic-font" dir="rtl">ميدان مراجعة علوم البلاغة</h1>
+                    <p class="text-[11px] text-slate-500 font-medium">Advanced Rhetoric Review Arena</p>
+                </div>
+            </div>
+
+            <nav class="flex gap-2">
+                <button onclick="switchTab('home')" id="tab-home" class="nav-tab px-4 py-2 text-sm font-bold rounded-lg text-green-800 bg-green-50 transition-all border border-green-200 shadow-sm flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-house"></i> <span class="hidden sm:inline">Home</span>
+                </button>
+                <button onclick="switchTab('study')" id="tab-study" class="nav-tab px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-green-700 hover:bg-green-50 hover:border-green-200 border border-transparent transition-all flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-book-open"></i> <span class="hidden sm:inline arabic-font">الدراسة</span> Study
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="nav-tab px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-green-700 hover:bg-green-50 hover:border-green-200 border border-transparent transition-all flex items-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-pen-to-square"></i> <span class="hidden sm:inline arabic-font">الاختبار</span> Quiz
+                </button>
+            </nav>
         </div>
     </div>
-    <button onclick="toggleSandboxModal(true)" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-white text-slate-950 text-xs font-bold tracking-wide transition-all shadow-lg flex items-center gap-2 cursor-pointer">
-        <i class="fa-solid fa-book-open text-teal-600"></i>
-        <span class="arabic-font font-bold text-sm">دِرَاسَة</span>
-    </button>
 </header>
 
-<main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
-    <div class="lg:col-span-1 flex flex-col gap-4">
-        <div class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
-            <h3 class="text-xs font-bold tracking-widest text-slate-400 mb-1 flex items-center justify-between border-b border-slate-800 pb-2" dir="rtl">
-                <span class="arabic-font text-sm font-bold">مَنَازِلُ الدِّرَاسَةِ</span>
-                <span class="text-[10px] bg-slate-950 px-2 py-0.5 rounded text-teal-400 font-sans" id="completion-stats-lbl">٠٪</span>
-            </h3>
-            <div class="flex flex-wrap gap-1 mb-3 pt-2" id="ilm-filter-bar">
-                <button onclick="filterByIlm('all')" class="filter-btn active px-2 py-0.5 rounded text-[10px] font-bold border border-slate-700 text-slate-400 transition cursor-pointer arabic-font" data-ilm="all">الكُلّ</button>
-                <button onclick="filterByIlm('objectives')" class="filter-btn px-2 py-0.5 rounded text-[10px] font-bold border border-slate-700 text-slate-400 transition cursor-pointer arabic-font" data-ilm="objectives">مَدْخَل</button>
-                <button onclick="filterByIlm('maany')" class="filter-btn px-2 py-0.5 rounded text-[10px] font-bold border border-slate-700 text-slate-400 transition cursor-pointer arabic-font" data-ilm="maany">الْمَعَانِي</button>
-                <button onclick="filterByIlm('bayan')" class="filter-btn px-2 py-0.5 rounded text-[10px] font-bold border border-slate-700 text-slate-400 transition cursor-pointer arabic-font" data-ilm="bayan">الْبَيَان</button>
-                <button onclick="filterByIlm('badi')" class="filter-btn px-2 py-0.5 rounded text-[10px] font-bold border border-slate-700 text-slate-400 transition cursor-pointer arabic-font" data-ilm="badi">الْبَدِيع</button>
-            </div>
-            <div class="space-y-1" id="level-nav-matrix-container"></div>
-        </div>
-    </div>
+<main class="flex-1 w-full flex flex-col">
 
-    <div class="lg:col-span-3 flex flex-col gap-6">
-        <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800/80 flex flex-wrap items-center justify-between gap-4 shadow-xl" dir="rtl">
-            <div class="flex items-center gap-3 text-right">
-                <div id="arena-stage-tag" class="h-10 w-10 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-teal-400 font-bold text-sm arabic-font">١</div>
-                <div>
-                    <h3 id="arena-stage-title" class="text-sm font-bold text-white tracking-wide arabic-font">مَدْخَلُ الْعُلُومِ</h3>
-                    <p id="arena-stage-desc" class="text-xs text-slate-400 mt-0.5 font-sans" dir="ltr">Core system competency tracking.</p>
-                </div>
+    <section id="view-home" class="view-section flex-1 w-full animate-fade-in p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[80vh]">
+        <div class="bg-white rounded-2xl shadow-sm border border-green-100 p-8 md:p-12 text-center max-w-3xl mx-auto">
+            <div class="w-20 h-20 bg-green-50 border border-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <i class="fa-solid fa-language text-3xl"></i>
             </div>
-            <button onclick="restartActiveQuizModule()" class="px-3 py-1.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-slate-300 border border-slate-800 transition text-sm font-medium flex items-center gap-1.5 cursor-pointer arabic-font">
-                <i class="fa-solid fa-rotate-left text-slate-400 text-xs"></i> إِعَادَة
-            </button>
+            <h2 class="text-3xl font-bold text-slate-800 mb-4 arabic-font" dir="rtl">مَرْحَبًا بِكُمْ فِي مِيدَانِ البَلَاغَةِ</h2>
+            <h3 class="text-xl font-semibold text-slate-700 mb-6">Welcome to the Balaghah Review Arena</h3>
+            <p class="text-slate-600 leading-relaxed mb-8 text-base max-w-2xl mx-auto">
+                This interactive platform is meticulously designed to help you master the elegant sciences of Arabic Rhetoric (البلاغة). 
+                <br><br>
+                Navigate to the <strong>Study Tab (الدراسة)</strong> to explore fundamental concepts, analyze linguistic examples, and understand grammatical breakdowns across ʿIlm al-Maʿānī, al-Bayān, and al-Badīʿ. 
+                When you are ready to evaluate your comprehension, proceed to the <strong>Quiz Tab (الاختبار)</strong> to test your knowledge against the curriculum.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="switchTab('study')" class="px-6 py-3 bg-green-700 hover:bg-green-800 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-book-open"></i> Enter Study Area
+                </button>
+                <button onclick="switchTab('quiz')" class="px-6 py-3 bg-white border-2 border-green-600 text-green-700 hover:bg-green-50 font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-clipboard-question"></i> Start the Quiz
+                </button>
+            </div>
         </div>
+    </section>
 
-        <div id="quiz-gameplay-card" class="bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 p-6 sm:p-8 rounded-2xl border border-slate-800/90 shadow-2xl relative">
-            <div class="w-full bg-slate-900 h-1 rounded-full overflow-hidden mb-6">
-                <div id="quiz-metric-progress-bar" class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full w-0 transition-all duration-300"></div>
-            </div>
-            <div class="flex justify-between items-center mb-4 text-xs">
-                <span id="quiz-question-counter-label" class="font-bold text-teal-400 uppercase tracking-widest">QUESTION 1 OF 4</span>
-                <span class="text-slate-500 font-medium flex items-center gap-1"><i class="fa-solid fa-shield-halved text-teal-500"></i> Core Competency Evaluation</span>
-            </div>
-            <div class="text-right">
-                <h2 id="quiz-arabic-question-text" class="text-xl sm:text-2xl font-bold text-white arabic-font leading-relaxed tracking-wide mb-2" dir="rtl">جاري تحميل نص السؤال البلاغي...</h2>
-            </div>
-            <div class="text-right">
-                <p id="quiz-english-question-text" class="text-xs sm:text-sm text-slate-400 font-medium tracking-wide border-r-2 border-teal-500/40 pr-3 mb-6 inline-block" dir="ltr">Loading context translation...</p>
-            </div>
-            <div id="quiz-arabic-options-grid" class="grid grid-cols-1 gap-3 pt-2"></div>
-            <div id="quiz-instant-feedback-card" class="mt-6 p-5 rounded-xl border border-slate-800 bg-slate-950/80 hidden transition-all duration-300">
-                <div class="flex items-start gap-3">
-                    <div id="feedback-status-badge-icon" class="h-6 w-6 rounded-full flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold"></div>
-                    <div class="flex-1">
-                        <h4 id="feedback-status-title" class="text-base font-black tracking-wide arabic-font text-left">صَحِيح</h4>
-                        <p id="feedback-status-explanation" class="text-sm text-slate-300 mt-2 leading-relaxed font-normal text-left"></p>
+    <section id="view-study" class="view-section hidden flex-1 w-full animate-fade-in p-4 sm:p-6 lg:p-8 bg-slate-50">
+        <div class="max-w-7xl mx-auto flex flex-col min-h-full">
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col flex-1">
+                <div class="border-b border-slate-100 bg-slate-50/50 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" dir="rtl">
+                    <div class="flex items-center gap-3 text-right">
+                        <div class="h-10 w-10 bg-green-50 border border-green-200 rounded-xl flex items-center justify-center text-green-700"><i class="fa-solid fa-vault"></i></div>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800 arabic-font">خَزَانَةُ الدِّرَاسَةِ — عُلُومُ البَلَاغَةِ</h2>
+                            <p class="text-xs text-slate-500 font-sans mt-0.5" dir="ltr">Complete Concept Reference: ʿUlūm al-Balāghah</p>
+                        </div>
                     </div>
                 </div>
-                <div class="mt-5 flex justify-end">
-                    <button id="feedback-next-action-trigger" onclick="progressToNextQuizAsset()" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-200 text-slate-950 font-bold text-xs shadow-xl transition-all flex items-center gap-2 cursor-pointer">
-                        <span id="next-action-btn-text" class="arabic-font text-sm">التَّالِي</span>
-                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                <div class="bg-white border-b border-slate-100 p-3 flex flex-wrap gap-2" id="sandbox-tab-navigation-bar" dir="rtl"></div>
+                <div class="p-6 flex-1 bg-slate-50/30">
+                    <div id="sandbox-exhaustive-cards-grid" class="space-y-6 max-w-5xl mx-auto"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-quiz" class="view-section hidden flex-1 w-full animate-fade-in p-4 sm:p-6 lg:p-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="lg:col-span-1 flex flex-col gap-4">
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                    <h3 class="text-xs font-bold tracking-widest text-slate-500 mb-1 flex items-center justify-between border-b border-slate-100 pb-3" dir="rtl">
+                        <span class="arabic-font text-sm font-bold text-slate-700">مَنَازِلُ الدِّرَاسَةِ</span>
+                        <span class="text-[10px] bg-green-100 border border-green-200 px-2 py-0.5 rounded-md text-green-800 font-sans font-bold" id="completion-stats-lbl">٠٪</span>
+                    </h3>
+                    <div class="flex flex-wrap gap-1 mb-3 pt-3" id="ilm-filter-bar">
+                        <button onclick="filterByIlm('all')" class="filter-btn active px-2 py-1 rounded-md text-[11px] font-bold border border-slate-200 text-slate-600 transition cursor-pointer arabic-font hover:bg-slate-50" data-ilm="all">الكُلّ</button>
+                        <button onclick="filterByIlm('objectives')" class="filter-btn px-2 py-1 rounded-md text-[11px] font-bold border border-slate-200 text-slate-600 transition cursor-pointer arabic-font hover:bg-slate-50" data-ilm="objectives">مَدْخَل</button>
+                        <button onclick="filterByIlm('maany')" class="filter-btn px-2 py-1 rounded-md text-[11px] font-bold border border-slate-200 text-slate-600 transition cursor-pointer arabic-font hover:bg-slate-50" data-ilm="maany">الْمَعَانِي</button>
+                        <button onclick="filterByIlm('bayan')" class="filter-btn px-2 py-1 rounded-md text-[11px] font-bold border border-slate-200 text-slate-600 transition cursor-pointer arabic-font hover:bg-slate-50" data-ilm="bayan">الْبَيَان</button>
+                        <button onclick="filterByIlm('badi')" class="filter-btn px-2 py-1 rounded-md text-[11px] font-bold border border-slate-200 text-slate-600 transition cursor-pointer arabic-font hover:bg-slate-50" data-ilm="badi">الْبَدِيع</button>
+                    </div>
+                    <div class="space-y-1 mt-2" id="level-nav-matrix-container"></div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 flex flex-col gap-6">
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-4 shadow-sm" dir="rtl">
+                    <div class="flex items-center gap-3 text-right">
+                        <div id="arena-stage-tag" class="h-10 w-10 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-green-700 font-bold text-sm arabic-font shadow-inner">١</div>
+                        <div>
+                            <h3 id="arena-stage-title" class="text-sm font-bold text-slate-800 tracking-wide arabic-font">مَدْخَلُ الْعُلُومِ</h3>
+                            <p id="arena-stage-desc" class="text-xs text-slate-500 mt-0.5 font-sans" dir="ltr">Core system competency tracking.</p>
+                        </div>
+                    </div>
+                    <button onclick="restartActiveQuizModule()" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 shadow-sm transition text-sm font-bold flex items-center gap-2 cursor-pointer arabic-font">
+                        <i class="fa-solid fa-rotate-left text-slate-400 text-xs"></i> إِعَادَة
                     </button>
                 </div>
-            </div>
-        </div>
 
-        <div id="quiz-victory-summary-card" class="bg-slate-900/90 border border-slate-800 p-8 rounded-2xl text-center space-y-6 shadow-2xl hidden">
-            <div class="w-16 h-16 bg-teal-500/10 border border-teal-500/30 text-teal-400 text-2xl rounded-full flex items-center justify-center mx-auto"><i class="fa-solid fa-award"></i></div>
-            <h3 class="text-2xl font-bold text-white arabic-font">تَمّ</h3>
-            <div class="flex justify-center gap-3">
-                <button onclick="toggleSandboxModal(true)" class="px-5 py-2.5 rounded-xl border border-slate-700 bg-slate-800 text-sm font-bold text-white hover:bg-slate-700 transition cursor-pointer arabic-font">دِرَاسَة</button>
-                <button id="victory-advance-level-trigger" onclick="autoAdvanceToNextGlobalLevel()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-sm font-bold text-slate-950 shadow-lg hover:brightness-110 transition cursor-pointer arabic-font">تَقَدَّم</button>
-            </div>
-        </div>
-    </div>
-</main>
+                <div id="quiz-gameplay-card" class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm relative">
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mb-6 border border-slate-200/60">
+                        <div id="quiz-metric-progress-bar" class="bg-green-600 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                    <div class="flex justify-between items-center mb-5 text-xs">
+                        <span id="quiz-question-counter-label" class="font-bold text-green-700 uppercase tracking-widest bg-green-50 px-2 py-1 rounded-md border border-green-100">QUESTION 1 OF 4</span>
+                        <span class="text-slate-500 font-bold flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-green-600"></i> Core Competency Evaluation</span>
+                    </div>
+                    <div class="text-right">
+                        <h2 id="quiz-arabic-question-text" class="text-xl sm:text-2xl font-bold text-slate-800 arabic-font leading-relaxed tracking-wide mb-2" dir="rtl">جاري تحميل نص السؤال البلاغي...</h2>
+                    </div>
+                    <div class="text-right">
+                        <p id="quiz-english-question-text" class="text-xs sm:text-sm text-slate-500 font-semibold tracking-wide border-r-2 border-green-500/40 pr-3 mb-6 inline-block bg-slate-50/50 py-1" dir="ltr">Loading context translation...</p>
+                    </div>
+                    <div id="quiz-arabic-options-grid" class="grid grid-cols-1 gap-3 pt-2"></div>
+                    
+                    <div id="quiz-instant-feedback-card" class="mt-6 p-5 rounded-xl border hidden transition-all duration-300">
+                        <div class="flex items-start gap-3">
+                            <div id="feedback-status-badge-icon" class="h-6 w-6 rounded-full flex items-center justify-center text-xs shrink-0 mt-0.5 font-bold text-white shadow-sm"></div>
+                            <div class="flex-1">
+                                <h4 id="feedback-status-title" class="text-base font-black tracking-wide arabic-font text-left">صَحِيح</h4>
+                                <p id="feedback-status-explanation" class="text-sm text-slate-700 mt-2 leading-relaxed font-medium text-left"></p>
+                            </div>
+                        </div>
+                        <div class="mt-5 flex justify-end">
+                            <button id="feedback-next-action-trigger" onclick="progressToNextQuizAsset()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer">
+                                <span id="next-action-btn-text" class="arabic-font text-sm">التَّالِي</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-<div id="sandbox-overlay-drawer" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 overflow-y-auto hidden transition-all duration-300 p-4 sm:p-6 md:p-8">
-    <div class="max-w-6xl w-full mx-auto bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col min-h-[85vh]">
-        <div class="border-b border-slate-800 bg-slate-950/60 p-5 flex items-center justify-between gap-4" dir="rtl">
-            <div class="flex items-center gap-3 text-right">
-                <div class="h-9 w-9 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-center text-teal-400"><i class="fa-solid fa-vault"></i></div>
-                <div>
-                    <h2 class="text-xl font-bold text-white arabic-font">دِرَاسَة — خَزَانَةُ الْبَلَاغَةِ</h2>
-                    <p class="text-xs text-slate-400 font-sans" dir="ltr">Complete concept reference: ʿUlūm al-Balāghah</p>
+                <div id="quiz-victory-summary-card" class="bg-white border border-green-200 p-10 rounded-2xl text-center space-y-6 shadow-sm hidden">
+                    <div class="w-20 h-20 bg-green-50 border border-green-200 text-green-600 text-3xl rounded-full flex items-center justify-center mx-auto shadow-inner"><i class="fa-solid fa-award"></i></div>
+                    <h3 class="text-3xl font-bold text-slate-800 arabic-font">تَمّ بِنَجَاح</h3>
+                    <p class="text-slate-600 font-medium">You have successfully completed this module.</p>
+                    <div class="flex justify-center gap-3 pt-4">
+                        <button onclick="switchTab('study')" class="px-6 py-3 rounded-xl border border-slate-300 bg-white text-sm font-bold text-slate-700 hover:bg-slate-50 transition shadow-sm cursor-pointer arabic-font flex items-center gap-2"><i class="fa-solid fa-book"></i> مراجعة الدراسة</button>
+                        <button id="victory-advance-level-trigger" onclick="autoAdvanceToNextGlobalLevel()" class="px-6 py-3 rounded-xl bg-green-700 text-sm font-bold text-white shadow-md hover:bg-green-800 transition cursor-pointer arabic-font flex items-center gap-2">تَقَدَّم <i class="fa-solid fa-arrow-left"></i></button>
+                    </div>
                 </div>
             </div>
-            <button onclick="toggleSandboxModal(false)" class="px-4 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white transition text-sm font-bold cursor-pointer arabic-font">إِغْلَاق <i class="fa-solid fa-xmark mr-1"></i></button>
         </div>
-        <div class="bg-slate-950/30 border-b border-slate-800/60 p-2 flex flex-wrap gap-1.5" id="sandbox-tab-navigation-bar" dir="rtl"></div>
-        <div class="p-6 flex-1 custom-scrollbar overflow-y-auto max-h-[68vh]">
-            <div id="sandbox-exhaustive-cards-grid" class="space-y-6"></div>
-        </div>
-    </div>
-</div>
+    </section>
 
-<footer class="border-t border-slate-950 bg-slate-950/40 py-4 px-8 text-center text-xs tracking-wide arabic-font text-slate-500">مَعْهَدُ زَكَرِيَّا — الْبَلَاغَة</footer>
+</main>
 
-const curriculumMasterDatabase = [
+<footer class="border-t border-slate-200 bg-white py-6 px-8 text-center text-sm font-semibold tracking-wide arabic-font text-slate-500 mt-auto shadow-[0_-1px_2px_rgba(0,0,0,0.02)]">
+    مَعْهَدُ زَكَرِيَّا — الْبَلَاغَة
+</footer>
+
 <script>
 // ═══════════════════════════════════════════════════════════
 // FULL CURRICULUM DATABASE
@@ -164,7 +212,7 @@ const curriculumMasterDatabase = [
         },
         {
             title:"المَبَادِئُ العَشَرَةُ", subtitle:"The 10 Foundational Principles of Each Science", category:"مَدْخَل",
-            concepts:["1. الحَدّ — the definition of the science","2. المَوْضُوع — what it studies and addresses","3. الثَّمَرَة — its fruit/benefit","4. الفَضْل — its virtue and rank","5. النِّسْبَة — its relation to other sciences","6. الوَاضِع — its founder","7. الاسْم — its name","8. الاسْتِمْدَاد — its source material","9. حُكْمُ الشَّارِع — its legal ruling","10. المَسَائِل — its core questions"],
+            concepts:["1. الحَدّ — the definition of the science","2. المَوْضُوع — what it studies and addresses","3. الثَّمَرَة — its fruit/benefit","4. الفَضْل — its virtue and rank","5. النِّسْبَة — 실 its relation to other sciences","6. الوَاضِع — its founder","7. الاسْم — its name","8. الاسْتِمْدَاد — its source material","9. حُكْمُ الشَّارِع — its legal ruling","10. المَسَائِل — its core questions"],
             arabicExample:"إِنَّ مَبَادِئَ كُلِّ فَنٍّ عَشَرَة: الحَدُّ، والمَوْضُوعُ، ثُمَّ الثَّمَرَة.",
             englishDetail:"Every Arabic science is introduced through 10 standard principles covering definition, scope, benefit, and more."
         },
@@ -831,7 +879,6 @@ const curriculumMasterDatabase = [
 
 ]; // END curriculumMasterDatabase
 
-
 // ═══════════════════════════════════════════════════════════
 // ENGINE
 // ═══════════════════════════════════════════════════════════
@@ -845,11 +892,35 @@ let currentIlmFilter = 'all';
 curriculumMasterDatabase.forEach(l => { levelCompletionTrackingMap[l.id] = false; });
 
 window.addEventListener("DOMContentLoaded", () => {
+    switchTab('home'); // Default view
     renderSidebarNavigationElements();
     renderSandboxNavigationTabs();
-    launchChallengeArenaModule(1);
     refreshProgressMetricsUI();
 });
+
+function switchTab(tabId) {
+    // Hide all sections
+    document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+    // Show active section
+    document.getElementById('view-' + tabId).classList.remove('hidden');
+
+    // Reset all tabs to inactive state
+    document.querySelectorAll('.nav-tab').forEach(el => {
+        el.className = 'nav-tab px-4 py-2 text-sm font-semibold rounded-lg text-slate-600 hover:text-green-700 hover:bg-green-50 hover:border-green-200 border border-transparent transition-all flex items-center gap-2 cursor-pointer shadow-none';
+    });
+
+    // Set active tab styling
+    const activeTab = document.getElementById('tab-' + tabId);
+    activeTab.className = 'nav-tab px-4 py-2 text-sm font-bold rounded-lg text-green-800 bg-green-50 border border-green-200 transition-all flex items-center gap-2 cursor-pointer shadow-sm';
+
+    // Ensure state dependencies are loaded
+    if(tabId === 'study') {
+        loadSandboxConceptCategory(currentGlobalLevelId);
+    }
+    if(tabId === 'quiz') {
+        launchChallengeArenaModule(currentGlobalLevelId);
+    }
+}
 
 function getFilteredLevels() {
     if (currentIlmFilter === 'all') return curriculumMasterDatabase;
@@ -876,18 +947,25 @@ function renderSidebarNavigationElements() {
         const isDone = levelCompletionTrackingMap[lvl.id];
         const btn = document.createElement("button");
         btn.onclick = () => selectActiveGlobalLevel(lvl.id);
+        
         btn.className = `w-full text-right p-3 rounded-xl border transition-all duration-200 flex items-center justify-between gap-3 text-xs font-semibold cursor-pointer ${
-            isSelected ? 'bg-gradient-to-r from-slate-800 to-slate-900 border-slate-700 text-white shadow-xl' : 'bg-transparent border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/30'
+            isSelected 
+                ? 'bg-green-700 border-green-600 text-white shadow-md' 
+                : 'bg-transparent border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
         }`;
-        const badgeStyle = isSelected ? 'bg-teal-500 text-slate-950' : 'bg-slate-950 text-slate-500';
+        
+        const badgeStyle = isSelected ? 'bg-white text-green-800' : 'bg-slate-100 text-slate-500 border border-slate-200';
+        
         btn.innerHTML = `
             <div class="flex items-center gap-2 overflow-hidden w-full justify-between" dir="rtl">
                 <div class="flex items-center gap-2 truncate">
                     <span class="h-6 w-6 rounded-md font-black flex items-center justify-center text-[11px] shrink-0 arabic-font ${badgeStyle}">${lvl.tag}</span>
-                    <p class="truncate font-bold text-slate-200 arabic-font text-xs">${lvl.levelName}</p>
+                    <p class="truncate font-bold arabic-font text-xs ${isSelected ? 'text-white' : 'text-slate-700'}">${lvl.levelName}</p>
                 </div>
                 <div class="shrink-0">
-                    ${isDone ? '<i class="fa-solid fa-circle-check text-teal-400"></i>' : '<i class="fa-solid fa-circle-notch text-slate-800"></i>'}
+                    ${isDone 
+                        ? `<i class="fa-solid fa-circle-check ${isSelected ? 'text-green-300' : 'text-green-600'}"></i>` 
+                        : `<i class="fa-solid fa-circle-notch ${isSelected ? 'text-green-400' : 'text-slate-300'}"></i>`}
                 </div>
             </div>
         `;
@@ -898,7 +976,14 @@ function renderSidebarNavigationElements() {
 function selectActiveGlobalLevel(targetLvlId) {
     currentGlobalLevelId = targetLvlId;
     renderSidebarNavigationElements();
-    launchChallengeArenaModule(targetLvlId);
+    
+    // Check which view we are currently in and update it
+    if(!document.getElementById('view-quiz').classList.contains('hidden')) {
+        launchChallengeArenaModule(targetLvlId);
+    }
+    if(!document.getElementById('view-study').classList.contains('hidden')) {
+        loadSandboxConceptCategory(targetLvlId);
+    }
 }
 
 function launchChallengeArenaModule(levelId) {
@@ -926,20 +1011,22 @@ function populateActiveQuizQuestionUI() {
     document.getElementById("quiz-arabic-question-text").innerText = activeQuestionObj.arQ;
     document.getElementById("quiz-english-question-text").innerText = activeQuestionObj.enSub;
     document.getElementById("quiz-instant-feedback-card").classList.add("hidden");
+    
     const optionsContainer = document.getElementById("quiz-arabic-options-grid");
     optionsContainer.innerHTML = "";
+    
     activeQuestionObj.choices.forEach((choiceItem, choiceIdx) => {
         const optionBtn = document.createElement("button");
         optionBtn.onclick = () => verifyUserQuizChoice(choiceIdx);
         optionBtn.id = `interactive-opt-node-${choiceIdx}`;
-        optionBtn.className = "w-full text-right p-4 rounded-xl bg-slate-950 border border-slate-800/80 hover:bg-slate-900 hover:border-slate-700 transition-all duration-150 flex flex-col gap-1 group cursor-pointer";
+        optionBtn.className = "w-full text-right p-4 rounded-xl bg-white border border-slate-200 hover:bg-green-50 hover:border-green-300 transition-all duration-150 flex flex-col gap-1 group cursor-pointer shadow-sm";
         optionBtn.innerHTML = `
             <div class="flex items-center justify-between gap-4 w-full" dir="rtl">
-                <span class="arabic-font text-base tracking-wide font-bold text-slate-200 group-hover:text-white flex-1 text-right">${choiceItem.ar}</span>
-                <span class="h-5 w-5 rounded bg-slate-900 group-hover:bg-slate-800 text-slate-500 group-hover:text-slate-300 flex items-center justify-center font-bold text-[10px] shrink-0 font-sans">${choiceIdx + 1}</span>
+                <span class="arabic-font text-base tracking-wide font-bold text-slate-800 group-hover:text-green-900 flex-1 text-right">${choiceItem.ar}</span>
+                <span class="h-6 w-6 rounded-md bg-slate-100 group-hover:bg-white border border-slate-200 group-hover:border-green-200 text-slate-500 group-hover:text-green-700 flex items-center justify-center font-bold text-[11px] shrink-0 font-sans shadow-sm">${choiceIdx + 1}</span>
             </div>
-            <div class="w-full text-left pt-0.5 border-t border-slate-900/40 mt-1" dir="ltr">
-                <span class="text-xs text-slate-400 group-hover:text-slate-300 font-medium block">${choiceItem.en}</span>
+            <div class="w-full text-left pt-1 border-t border-slate-100 mt-2" dir="ltr">
+                <span class="text-xs text-slate-500 group-hover:text-slate-700 font-medium block">${choiceItem.en}</span>
             </div>
         `;
         optionsContainer.appendChild(optionBtn);
@@ -952,34 +1039,39 @@ function verifyUserQuizChoice(userChoiceIndex) {
     const targetLvlData = curriculumMasterDatabase.find(l => l.id === currentGlobalLevelId);
     const questionObj = targetLvlData.quizQuestions[currentQuizQuestionIndex];
     const totalCount = targetLvlData.quizQuestions.length;
+    
     for (let i = 0; i < questionObj.choices.length; i++) {
         const targetBtn = document.getElementById(`interactive-opt-node-${i}`);
         if (targetBtn) targetBtn.disabled = true;
     }
+    
     const feedbackCard = document.getElementById("quiz-instant-feedback-card");
     const iconBox = document.getElementById("feedback-status-badge-icon");
     const titleBox = document.getElementById("feedback-status-title");
     const descBox = document.getElementById("feedback-status-explanation");
     const nextActionBtnLabel = document.getElementById("next-action-btn-text");
     const evaluationOutcome = userChoiceIndex === questionObj.correctIdx;
+    
     if (evaluationOutcome) {
-        document.getElementById(`interactive-opt-node-${userChoiceIndex}`).classList.add("border-teal-500", "bg-teal-950/20");
-        feedbackCard.className = "mt-6 p-5 rounded-xl bg-teal-950/20 border border-teal-800/40";
-        iconBox.className = "h-6 w-6 rounded-full bg-teal-500 text-slate-950 flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-md";
+        document.getElementById(`interactive-opt-node-${userChoiceIndex}`).classList.add("border-green-500", "bg-green-50", "ring-2", "ring-green-200");
+        feedbackCard.className = "mt-6 p-5 rounded-xl bg-green-50 border border-green-200 shadow-sm";
+        iconBox.className = "h-6 w-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-md";
         iconBox.innerHTML = '<i class="fa-solid fa-check"></i>';
-        titleBox.className = "text-base font-black tracking-wide text-teal-400 arabic-font text-left";
+        titleBox.className = "text-base font-black tracking-wide text-green-800 arabic-font text-left";
         titleBox.innerText = "صَحِيح";
     } else {
-        document.getElementById(`interactive-opt-node-${userChoiceIndex}`).classList.add("border-rose-500", "bg-rose-950/20");
-        document.getElementById(`interactive-opt-node-${questionObj.correctIdx}`).classList.add("border-teal-600", "bg-teal-950/10");
-        feedbackCard.className = "mt-6 p-5 rounded-xl bg-slate-950 border border-slate-800";
-        iconBox.className = "h-6 w-6 rounded-full bg-rose-500 text-slate-950 flex items-center justify-center text-xs shrink-0 mt-0.5";
+        document.getElementById(`interactive-opt-node-${userChoiceIndex}`).classList.add("border-rose-500", "bg-rose-50", "ring-2", "ring-rose-200");
+        document.getElementById(`interactive-opt-node-${questionObj.correctIdx}`).classList.add("border-green-400", "bg-green-50/50");
+        feedbackCard.className = "mt-6 p-5 rounded-xl bg-rose-50 border border-rose-200 shadow-sm";
+        iconBox.className = "h-6 w-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shrink-0 mt-0.5 shadow-md";
         iconBox.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-        titleBox.className = "text-base font-black tracking-wide text-rose-400 arabic-font text-left";
+        titleBox.className = "text-base font-black tracking-wide text-rose-800 arabic-font text-left";
         titleBox.innerText = "خَطَأ";
     }
-    descBox.className = "text-sm text-slate-300 mt-2 leading-relaxed font-normal text-left";
+    
+    descBox.className = "text-sm text-slate-700 mt-2 leading-relaxed font-medium text-left";
     descBox.innerText = questionObj.explanation;
+    
     if (currentQuizQuestionIndex === totalCount - 1) {
         nextActionBtnLabel.innerText = "إِنْهَاء";
     } else {
@@ -998,10 +1090,12 @@ function progressToNextQuizAsset() {
         refreshProgressMetricsUI();
         renderSidebarNavigationElements();
         document.getElementById("quiz-gameplay-card").classList.add("hidden");
+        
         const victoryBox = document.getElementById("quiz-victory-summary-card");
         const advanceBtn = document.getElementById("victory-advance-level-trigger");
         const filtered = getFilteredLevels();
         const currentIdx = filtered.findIndex(l => l.id === currentGlobalLevelId);
+        
         if (currentIdx === filtered.length - 1) {
             advanceBtn.classList.add("hidden");
         } else {
@@ -1031,16 +1125,6 @@ function refreshProgressMetricsUI() {
     document.getElementById("completion-stats-lbl").innerText = `٪${pct}`;
 }
 
-function toggleSandboxModal(displayFlag) {
-    const sandboxModal = document.getElementById("sandbox-overlay-drawer");
-    if (displayFlag) {
-        sandboxModal.classList.remove("hidden");
-        loadSandboxConceptCategory(currentGlobalLevelId);
-    } else {
-        sandboxModal.classList.add("hidden");
-    }
-}
-
 function renderSandboxNavigationTabs() {
     const navBar = document.getElementById("sandbox-tab-navigation-bar");
     navBar.innerHTML = "";
@@ -1048,7 +1132,7 @@ function renderSandboxNavigationTabs() {
         const tabBtn = document.createElement("button");
         tabBtn.id = `sandbox-tab-trigger-node-${lvl.id}`;
         tabBtn.onclick = () => loadSandboxConceptCategory(lvl.id);
-        tabBtn.className = "px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-800 bg-slate-950 text-slate-400 hover:text-white transition cursor-pointer arabic-font";
+        tabBtn.className = "px-4 py-2 rounded-lg text-sm font-bold border border-slate-200 bg-white text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition cursor-pointer arabic-font shadow-sm";
         tabBtn.innerText = lvl.tag;
         tabBtn.title = lvl.levelName;
         navBar.appendChild(tabBtn);
@@ -1060,8 +1144,8 @@ function loadSandboxConceptCategory(levelId) {
         const node = document.getElementById(`sandbox-tab-trigger-node-${l.id}`);
         if (node) {
             node.className = l.id === levelId
-                ? "px-3 py-1.5 rounded-lg text-xs font-black border border-teal-500/40 bg-teal-500/10 text-teal-400 transition cursor-pointer arabic-font"
-                : "px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-800 bg-slate-950 text-slate-400 hover:text-white transition cursor-pointer arabic-font";
+                ? "px-4 py-2 rounded-lg text-sm font-black border border-green-300 bg-green-50 text-green-800 transition cursor-pointer arabic-font shadow-sm"
+                : "px-4 py-2 rounded-lg text-sm font-bold border border-slate-200 bg-white text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition cursor-pointer arabic-font shadow-sm";
         }
     });
     const levelData = curriculumMasterDatabase.find(l => l.id === levelId);
@@ -1069,18 +1153,18 @@ function loadSandboxConceptCategory(levelId) {
     gridContainer.innerHTML = "";
 
     const ilmLabels = { objectives: 'المَدْخَل والفَصَاحَة', maany: 'عِلْمُ المَعَانِي', bayan: 'عِلْمُ البَيَانِ', badi: 'عِلْمُ البَدِيعِ' };
-    const ilmColors = { objectives: 'text-amber-400', maany: 'text-teal-400', bayan: 'text-sky-400', badi: 'text-violet-400' };
+    const ilmColors = { objectives: 'text-amber-600', maany: 'text-green-700', bayan: 'text-sky-600', badi: 'text-violet-600' };
 
     const headerEl = document.createElement("div");
-    headerEl.className = "mb-4 p-3 rounded-xl bg-slate-950/60 border border-slate-800/60 border-l-2 border-l-teal-500";
+    headerEl.className = "mb-6 p-4 rounded-xl bg-white border border-slate-200 border-r-4 border-r-green-600 shadow-sm";
     headerEl.innerHTML = `
         <div class="flex flex-wrap items-center gap-2 mb-1">
-            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 font-sans">عِلْم</span>
-            <span class="arabic-font text-base font-bold ${ilmColors[levelData.ilm] || 'text-teal-400'}">${ilmLabels[levelData.ilm] || levelData.ilm}</span>
-            <span class="text-slate-600 font-sans text-xs">—</span>
-            <span class="arabic-font text-sm font-bold text-white">${levelData.levelName}</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-sans">عِلْم</span>
+            <span class="arabic-font text-base font-bold ${ilmColors[levelData.ilm] || 'text-green-700'}">${ilmLabels[levelData.ilm] || levelData.ilm}</span>
+            <span class="text-slate-300 font-sans text-xs">—</span>
+            <span class="arabic-font text-sm font-bold text-slate-800">${levelData.levelName}</span>
         </div>
-        <p class="text-[11px] text-slate-400 font-sans">${levelData.levelDesc}</p>
+        <p class="text-xs text-slate-600 font-medium font-sans">${levelData.levelDesc}</p>
     `;
     gridContainer.appendChild(headerEl);
 
@@ -1089,25 +1173,25 @@ function loadSandboxConceptCategory(levelId) {
 
     levelData.sandboxCards.forEach(card => {
         const cardEl = document.createElement("div");
-        cardEl.className = "bg-slate-950/80 border border-slate-800 p-5 rounded-xl flex flex-col space-y-3 hover:border-slate-700/60 transition-all text-left";
+        cardEl.className = "bg-white border border-slate-200 p-5 rounded-xl flex flex-col space-y-3 hover:border-green-200 hover:shadow-md transition-all text-left shadow-sm";
 
         const conceptsHtml = card.concepts && card.concepts.length
-            ? `<ul class="space-y-1.5 mt-1">${card.concepts.map(c => `<li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-teal-500 mt-0.5 shrink-0 text-[8px]">◆</span><span class="arabic-font text-sm leading-relaxed" dir="rtl">${c}</span></li>`).join('')}</ul>`
-            : `<p class="text-xs text-slate-400 leading-relaxed">${card.englishDetail || ''}</p>`;
+            ? `<ul class="space-y-2 mt-1">${card.concepts.map(c => `<li class="flex items-start gap-2 text-xs text-slate-600"><span class="text-green-600 mt-0.5 shrink-0 text-[8px]">◆</span><span class="arabic-font text-sm leading-relaxed" dir="rtl">${c}</span></li>`).join('')}</ul>`
+            : `<p class="text-xs text-slate-500 leading-relaxed">${card.englishDetail || ''}</p>`;
 
         cardEl.innerHTML = `
             <div class="flex justify-between items-start gap-3">
                 <div class="flex-1 min-w-0">
-                    <h4 class="text-base font-black text-white arabic-font leading-snug" dir="rtl">${card.title}</h4>
-                    <span class="text-[11px] text-teal-400 font-semibold tracking-wide uppercase block mt-0.5">${card.subtitle}</span>
+                    <h4 class="text-base font-black text-slate-800 arabic-font leading-snug" dir="rtl">${card.title}</h4>
+                    <span class="text-[11px] text-green-700 font-bold tracking-wide uppercase block mt-0.5">${card.subtitle}</span>
                 </div>
-                <span class="text-[10px] bg-teal-500/10 border border-teal-500/25 text-teal-300 px-2 py-0.5 rounded-full font-bold font-sans shrink-0 whitespace-nowrap arabic-font">${card.category}</span>
+                <span class="text-[10px] bg-green-50 border border-green-200 text-green-800 px-2 py-0.5 rounded-full font-bold font-sans shrink-0 whitespace-nowrap arabic-font">${card.category}</span>
             </div>
-            <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-900 text-center shadow-inner" dir="rtl">
-                <p class="text-lg text-emerald-400 font-bold arabic-font leading-relaxed">${card.arabicExample}</p>
+            <div class="bg-green-50/50 p-3 rounded-xl border border-green-100 text-center shadow-inner" dir="rtl">
+                <p class="text-lg text-green-800 font-bold arabic-font leading-relaxed">${card.arabicExample}</p>
             </div>
             <div>
-                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block font-sans mb-1.5">المفاهيم الأساسية</span>
+                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block font-sans mb-2 border-b border-slate-100 pb-1">المفاهيم الأساسية</span>
                 ${conceptsHtml}
             </div>
         `;
@@ -1115,6 +1199,8 @@ function loadSandboxConceptCategory(levelId) {
     });
     gridContainer.appendChild(cardsGrid);
 }
-
 </script>
-</body></html>
+</body>
+</html>
+
+```
